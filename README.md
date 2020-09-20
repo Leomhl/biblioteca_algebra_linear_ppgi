@@ -39,12 +39,12 @@ Qualquer dúvida, só perguntar! :blush:
 |--------------------------------------------------------------|--------------------------------------------------:|----------------------------------|-------------|--------|
 | Produto interno                                              | 2 vetores u, v                                    | escalar c                        | leo         |	:white_check_mark:	 | 
 | Posto da matriz                                              | 1 matriz                                          | inteiro                          | nomair      |	:x:	 |
-| Comprimento de um vetor (norma do vetor)                     | 1 vetor                                           | escalar                          | leo         |	:x:	 |
+| Comprimento de um vetor (norma do vetor)                     | 1 vetor                                           | escalar                          | leo         |	:white_check_mark:	 |
 | Ângulo entre dois vetores                                    | 2 vetores u, v                                    | ângulo theta (escalar)           | Nomair      |	:x:	 |
 | Se 2 vetores são perpendiculares                             | 2 vetores: u,v                                    | booleano                         | Nomair      |	:x:	 |
-| Se vetores são ortogonais                                    | vetores                                           | booleano                         | leo         |	:x:	 |
+| Se vetores são ortogonais                                    | vetores                                           | booleano                         | leo         |	:white_check_mark:	 |
 | Se duas retas são ortogonais                                 | 2 retas: 2 vetores: u,v                           | booleano                         | waldir      |	:x:	 |
-| Se uma vetor é ortogonal a um plano                          | 1 reta, 1 plano                                   | booleano                         | leo         |	:x:	 |
+| Se uma vetor é ortogonal a um plano                          | 1 reta, 1 plano                                   | booleano                         | leo         |	:white_check_mark:	 |
 | Eliminação Gaussiana                                         | 1 matriz quadrada A e 1 vetor coluna b            | Um vetor x                       | gastao      |	:x:	 |
 | Verificar se uma matriz é triangular                         | 1 matriz                                          | booleano                         | gabi        |	:x:	 |
 | Verificar se uma matriz é ortogonal                          | 1 matriz A                                        | booleano                         | gabi        |	:x:	 |

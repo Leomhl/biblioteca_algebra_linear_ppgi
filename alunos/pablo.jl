@@ -1,9 +1,3 @@
-#------------------------------------------------------------------------------------------
-# Á L G E B R A   L I N E A L   C O M P U T A C I O N A L
-#------------------------------------------------------------------------------------------
-#     J U L I A   F U N C T I O N S   L I B R A R Y
-#------------------------------------------------------------------------------------------
-
 
 #------------------------------------------------------------------------------------------
 # D E S C O M P O S I Ç Ã O   D E   M A T R I Z E S
@@ -29,6 +23,7 @@ function Factorization_QR(A)
    R = Q'A;
    return Q, R
 end
+
 #------------------------------------------------------------------------------------------
 # Fatoração L1U baseado em Aproximaçôes de Matrizes de Posto 1
 # Diagonal da Matriz Triangular Inferior L con 1s
@@ -47,6 +42,7 @@ function Factorization_L1U(A)
   end
   return L,U
 end
+
 #------------------------------------------------------------------------------------------
 # Fatoração LU1 baseado em Aproximaçôes de Matrizes de Posto 1
 # Diagonal da Matriz Triangular Superior U con 1s
@@ -65,6 +61,7 @@ function Factorization_LU1(A)
   end
   return L,U
 end
+
 #----------------------------------------------------------------------
 # Processo de Transformação das matrizes A e B 
 # para obter uma Matriz Triangular Superior
@@ -80,6 +77,7 @@ function EliminacaoGaussiana_TS(A,B)
    end
    return A,B
 end
+
 #----------------------------------------------------------------------
 # Processo de Transformação das matrizes A e B 
 # para obter uma Matriz Triangular Inferior
@@ -95,6 +93,7 @@ function EliminacaoGaussiana_TI(A,B)
    end
    return A,B
 end
+
 #----------------------------------------------------------------------
 # Obtenção do vetor X de soluções do Sistema Linear AX = B
 # por Substituicao Reversa usando a Matriz Triangular Superior
@@ -111,6 +110,7 @@ function SubstituicaoReversa_TS(A,B)
    end
    return X;
 end
+
 #----------------------------------------------------------------------
 # Obtenção do vetor X de soluções do Sistema Linear AX = B
 # por Substituicao Direta usando a Matriz Triangular Inferior
@@ -127,6 +127,7 @@ function SubstituicaoDireta_TI(A,B)
    end
    return X;
 end
+
 #----------------------------------------------------------------------
 # Processo de Transformação das matrizes A e B 
 # para obter uma Matriz Diagonal
@@ -144,12 +145,7 @@ function GaussJordan(A,B)
    end
    return A,B
 end
-#------------------------------------------------------------------------------------------
-#------------------------------------------------------------------------------------------
-#------------------------------------------------------------------------------------------
-#------------------------------------------------------------------------------------------
-#------------------------------------------------------------------------------------------
-#------------------------------------------------------------------------------------------
+
 #------------------------------------------------------------------------------------------
 # F U N Ç Õ E S   D E   V I S U A L I Z A Ç Ã O
 #------------------------------------------------------------------------------------------
@@ -226,6 +222,7 @@ function RealFormat(X,PI,PD)
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   return string(NI,".",ND);
 end
+
 #------------------------------------------------------------------------------------------
 # Imprime Horizontalmente o vetor U considerando 
 # "PI" Posições Inteiras e "PD" Posições Decimais
@@ -236,6 +233,7 @@ function PrintVetorH(U,PI,PD)
        print(RealFormat(U[k],PI,PD));
    end
 end
+
 #------------------------------------------------------------------------------------------
 # Imprime Verticalmente o vetor U considerando 
 # "PI" Posições Inteiras e "PD" Posições Decimais
@@ -246,6 +244,7 @@ function PrintVetorV(U,PI,PD)
        println(RealFormat(U[k],PI,PD));
    end
 end
+
 #------------------------------------------------------------------------------------------
 # Imprime os elementos da matriz A considerando 
 # "PI" Posições Inteiras e "PD" Posições Decimais
@@ -259,6 +258,7 @@ function PrintMatrix(A,PI,PD)
        println("");
    end
 end
+
 #------------------------------------------------------------------------------------------
 # Imprime os elementos da matriz A e do vetor B 
 # considerando "PI" Posições Inteiras e "PD" Posições Decimais
@@ -274,6 +274,7 @@ function PrintLinearSystem(A,B,PI,PD)
        println("");
    end
 end
+
 #------------------------------------------------------------------------------------------
 # Imprime a Matriz em um Arquivo TXT
 #------------------------------------------------------------------------------------------
@@ -288,5 +289,3 @@ function MatrixToText(A,PI,PD,FILE)
    end
    close(F);
 end
-
-
