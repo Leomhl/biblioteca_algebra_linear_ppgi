@@ -1,0 +1,17 @@
+Abre o git bash
+
+ls - listar arquivos da pasta
+cd - entrar na pasta
+
+cd .. - sair da pasta
+
+git status - lista como está o estado atual do repositório
+git add . - adicionar todas as alterações 
+git commit -m "Comentário da alteração" - fecha o "pacote" de alterações
+git push origin master - envia as alterações pro repositório online
+git pull origin master - baixa as alterações realizadas no repositório
+
+
+
+detalhe: pull e push só funcionam quando seus commits estão feitos. Código não commitado ele não vai deixar!
+
