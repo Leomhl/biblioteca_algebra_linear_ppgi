@@ -35,45 +35,45 @@ Qualquer dúvida, só perguntar! :blush:
 
 **Lista de funcionalidades que a biblioteca deve ter**
 
-| Especificações                                               |                                           Entrada | Saída                            | Responsável |
-|--------------------------------------------------------------|--------------------------------------------------:|----------------------------------|-------------|
-| Produto interno                                              | 2 vetores u, v                                    | escalar c                        | leo         |
-| Posto da matriz                                              | 1 matriz                                          | inteiro                          | nomair      |
-| Comprimento de um vetor (norma do vetor)                     | 1 vetor                                           | escalar                          | leo         |
-| Ângulo entre dois vetores                                    | 2 vetores u, v                                    | ângulo theta (escalar)           | Nomair      |
-| Se 2 vetores são perpendiculares                             | 2 vetores: u,v                                    | booleano                         | Nomair      |
-| Se vetores são ortogonais                                    | vetores                                           | booleano                         | leo         |
-| Se duas retas são ortogonais                                 | 2 retas: 2 vetores: u,v                           | booleano                         | waldir      |
-| Se uma vetor é ortogonal a um plano                          | 1 reta, 1 plano                                   | booleano                         | leo         |
-| Eliminação Gaussiana                                         | 1 matriz quadrada A e 1 vetor coluna b            | Um vetor x                       | gastao      |
-| Verificar se uma matriz é triangular                         | 1 matriz                                          | booleano                         | gabi        |
-| Verificar se uma matriz é ortogonal                          | 1 matriz A                                        | booleano                         | gabi        |
-| Verficar se um conjunto de vetores forma uma base ortonormal | Conjunto de vetores                               |                                  | Gabi        |
-| Projeção de um vetor em uma reta                             | Vetor u e vetor direção da reta v                 | Vetor projetado a                | waldir      |
-| Projeção de um vetor em um plano                             | 1 vetor, 1 plano                                  |                                  | waldir      |
-| Verificar se uma matriz é inversível                         | 1 matriz                                          | booleano                         |             |
-| Gauss-jordan                                                 | 1 matriz e 1 vetor                                | 1 vetor x                        | pablo       |
-| Decomposiçao LU                                              | Uma matriz A                                      | Duas matrizes triangulares L e U | pablo       |
-| Substituiçao reversa (ou recursiva)                          | 1 matriz triangular superior A e 1 vetor coluna b | vetor x                          | Gabi        |
-| Substituição normal (ou recursiva)                           | 1 matriz triangular inferior A e 1 vetor coluna b | vetor x                          | gastao      |
-| Mínimos quadrados                                            | Matriz A e vetor b                                | Vetor x                          |             |
-| Decomposição QR                                              | 1 matriz                                          | 2 matrizes                       | Gastão      |
-| SVD (só o primeiro vetor)                                    | Conjunto de pontos: matriz                        | vetor v                          | gastao      |
-| Determinante                                                 | Uma matriz quadrada                               | escalar                          | pablo       |
-| Produto vetorial                                             | 2 vetores p, q                                    | vetor r                          |             |
-| Pseudo inversa                                               | matriz A                                          | matriz A*                        | gabi        |
-| Achar a menor solução de um sistema linear                   | matriz A, vetor b                                 | vetor x*                         |             |
-| Achar infinitas soluções de um sistema linear                | matriz A, vetor b                                 | ??                               |             |
-| Achar nucleo soluçao sistema linear                          | 1 matriz                                          | conjunto vetores                 |             |
-| Achar os b que o sistema Ax=b tem solução                    | lista de variáveis e relações entre elas          | vetor b                          |             |
-| Sistema dinâmicos lineares                                   | Matriz A, um vetor x e um inteiro k               | Uma matriz C                     | gastao      |
-| Modelagem                                                    | lista de variáveis e relações entre elas          | uma matriz de solução            |             |
-| Normas                                                       | 1 vetor b                                         | escalar c                        | Waldir      |
-| Produto de matrizes (ou recursiva)                           | Duas matrizes A e B                               | Uma matriz C                     | Waldir      |
-| Soma de matrizes (ou recursiva)                              | Duas matrizes A e B                               | Uma matriz X                     | Waldir      |
-| Encontrar Inversa                                            |                                                   |                                  |             |
-| Testes: Matrizes do problemas de modelagem, aleatórias       | ??                                                |                                  |             |
-| Gauss-Seidel                                                 | 1 matriz A, 1 vetor b                             | Um vetor x                       | pablo       |
-| Gauss-Jacobi                                                 | 1 matriz A, 1 vetor b                             | Um vetor x                       | pablo       |
-| Visualizações, input-output                                  |                                                   |                                  | pablo       |
-| Transposta                                                   |                                                   |                                  |             |
+| Especificações                                               |                                           Entrada | Saída                            | Responsável | Status |
+|--------------------------------------------------------------|--------------------------------------------------:|----------------------------------|-------------|--------|
+| Produto interno                                              | 2 vetores u, v                                    | escalar c                        | leo         |	:white_check_mark:	 | 
+| Posto da matriz                                              | 1 matriz                                          | inteiro                          | nomair      |	:x:	 |
+| Comprimento de um vetor (norma do vetor)                     | 1 vetor                                           | escalar                          | leo         |	:x:	 |
+| Ângulo entre dois vetores                                    | 2 vetores u, v                                    | ângulo theta (escalar)           | Nomair      |	:x:	 |
+| Se 2 vetores são perpendiculares                             | 2 vetores: u,v                                    | booleano                         | Nomair      |	:x:	 |
+| Se vetores são ortogonais                                    | vetores                                           | booleano                         | leo         |	:x:	 |
+| Se duas retas são ortogonais                                 | 2 retas: 2 vetores: u,v                           | booleano                         | waldir      |	:x:	 |
+| Se uma vetor é ortogonal a um plano                          | 1 reta, 1 plano                                   | booleano                         | leo         |	:x:	 |
+| Eliminação Gaussiana                                         | 1 matriz quadrada A e 1 vetor coluna b            | Um vetor x                       | gastao      |	:x:	 |
+| Verificar se uma matriz é triangular                         | 1 matriz                                          | booleano                         | gabi        |	:x:	 |
+| Verificar se uma matriz é ortogonal                          | 1 matriz A                                        | booleano                         | gabi        |	:x:	 |
+| Verficar se um conjunto de vetores forma uma base ortonormal | Conjunto de vetores                               |                                  | Gabi        |	:x:	 |
+| Projeção de um vetor em uma reta                             | Vetor u e vetor direção da reta v                 | Vetor projetado a                | waldir      |	:x:	 |
+| Projeção de um vetor em um plano                             | 1 vetor, 1 plano                                  |                                  | waldir      |	:x:	 |
+| Verificar se uma matriz é inversível                         | 1 matriz                                          | booleano                         |             |	:x:	 |
+| Gauss-jordan                                                 | 1 matriz e 1 vetor                                | 1 vetor x                        | pablo       |	:x:	 |
+| Decomposiçao LU                                              | Uma matriz A                                      | Duas matrizes triangulares L e U | pablo       |	:x:	 |
+| Substituiçao reversa (ou recursiva)                          | 1 matriz triangular superior A e 1 vetor coluna b | vetor x                          | Gabi        |	:x:	 |
+| Substituição normal (ou recursiva)                           | 1 matriz triangular inferior A e 1 vetor coluna b | vetor x                          | gastao      |	:x:	 |
+| Mínimos quadrados                                            | Matriz A e vetor b                                | Vetor x                          |             |	:x:	 |
+| Decomposição QR                                              | 1 matriz                                          | 2 matrizes                       | Gastão      |	:x:	 |
+| SVD (só o primeiro vetor)                                    | Conjunto de pontos: matriz                        | vetor v                          | gastao      |	:x:	 |
+| Determinante                                                 | Uma matriz quadrada                               | escalar                          | pablo       |	:x:	 |
+| Produto vetorial                                             | 2 vetores p, q                                    | vetor r                          |             |	:x:	 |
+| Pseudo inversa                                               | matriz A                                          | matriz A*                        | gabi        |	:x:	 |
+| Achar a menor solução de um sistema linear                   | matriz A, vetor b                                 | vetor x*                         |             |	:x:	 |
+| Achar infinitas soluções de um sistema linear                | matriz A, vetor b                                 | ??                               |             |	:x:	 |
+| Achar nucleo soluçao sistema linear                          | 1 matriz                                          | conjunto vetores                 |             |	:x:	 |
+| Achar os b que o sistema Ax=b tem solução                    | lista de variáveis e relações entre elas          | vetor b                          |             |	:x:	 |
+| Sistema dinâmicos lineares                                   | Matriz A, um vetor x e um inteiro k               | Uma matriz C                     | gastao      |	:x:	 |
+| Modelagem                                                    | lista de variáveis e relações entre elas          | uma matriz de solução            |             |	:x:	 |
+| Normas                                                       | 1 vetor b                                         | escalar c                        | Waldir      |	:x:	 |
+| Produto de matrizes (ou recursiva)                           | Duas matrizes A e B                               | Uma matriz C                     | Waldir      |	:x:	 |
+| Soma de matrizes (ou recursiva)                              | Duas matrizes A e B                               | Uma matriz X                     | Waldir      |	:x:	 |
+| Encontrar Inversa                                            |                                                   |                                  |             |	:x:	 |
+| Testes: Matrizes do problemas de modelagem, aleatórias       | ??                                                |                                  |             |	:x:	 |
+| Gauss-Seidel                                                 | 1 matriz A, 1 vetor b                             | Um vetor x                       | pablo       |	:x:	 |
+| Gauss-Jacobi                                                 | 1 matriz A, 1 vetor b                             | Um vetor x                       | pablo       |	:x:	 |
+| Visualizações, input-output                                  |                                                   |                                  | pablo       |	:x:	 |
+| Transposta                                                   |                                                   |                                  |             |	:x:	 |
