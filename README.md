@@ -38,27 +38,27 @@ Qualquer dúvida, só perguntar! :blush:
 | Especificações                                               |                                           Entrada | Saída                            | Responsável | Status |
 |--------------------------------------------------------------|--------------------------------------------------:|----------------------------------|-------------|--------|
 | Produto interno                                              | 2 vetores u, v                                    | escalar c                        | leo         |	:white_check_mark:	 | 
-| Posto da matriz                                              | 1 matriz                                          | inteiro                          | nomair      |	:x:	 |
+| Posto da matriz                                              | 1 matriz                                          | inteiro                          | nomair      |	:white_check_mark:	 |
 | Comprimento de um vetor (norma do vetor)                     | 1 vetor                                           | escalar                          | leo         |	:white_check_mark:	 |
-| Ângulo entre dois vetores                                    | 2 vetores u, v                                    | ângulo theta (escalar)           | Nomair      |	:x:	 |
-| Se 2 vetores são perpendiculares                             | 2 vetores: u,v                                    | booleano                         | Nomair      |	:x:	 |
+| Ângulo entre dois vetores                                    | 2 vetores u, v                                    | ângulo theta (escalar)           | Nomair      |	:white_check_mark:	 |
+| Se 2 vetores são perpendiculares                             | 2 vetores: u,v                                    | booleano                         | Nomair      |	:white_check_mark:	 |
 | Se vetores são ortogonais                                    | vetores                                           | booleano                         | leo         |	:white_check_mark:	 |
-| Se duas retas são ortogonais                                 | 2 retas: 2 vetores: u,v                           | booleano                         | waldir      |	:x:	 |
+| Se duas retas são ortogonais                                 | 2 retas: 2 vetores: u,v                           | booleano                         | waldir      |	:white_check_mark:	 |
 | Se uma vetor é ortogonal a um plano                          | 1 reta, 1 plano                                   | booleano                         | leo         |	:white_check_mark:	 |
-| Eliminação Gaussiana                                         | 1 matriz quadrada A e 1 vetor coluna b            | Um vetor x                       | gastao      |	:x:	 |
+| Eliminação Gaussiana                                         | 1 matriz quadrada A e 1 vetor coluna b            | Um vetor x                       | gastao      |	:white_check_mark:	 |
 | Verificar se uma matriz é triangular                         | 1 matriz                                          | booleano                         | gabi        |	:x:	 |
 | Verificar se uma matriz é ortogonal                          | 1 matriz A                                        | booleano                         | gabi        |	:x:	 |
 | Verficar se um conjunto de vetores forma uma base ortonormal | Conjunto de vetores                               |                                  | Gabi        |	:x:	 |
-| Projeção de um vetor em uma reta                             | Vetor u e vetor direção da reta v                 | Vetor projetado a                | waldir      |	:x:	 |
-| Projeção de um vetor em um plano                             | 1 vetor, 1 plano                                  |                                  | waldir      |	:x:	 |
+| Projeção de um vetor em uma reta                             | Vetor u e vetor direção da reta v                 | Vetor projetado a                | waldir      |	:white_check_mark:	 |
+| Projeção de um vetor em um plano                             | 1 vetor, 1 plano                                  |                                  | waldir      |	:white_check_mark:	 |
 | Verificar se uma matriz é inversível                         | 1 matriz                                          | booleano                         |             |	:x:	 |
-| Gauss-jordan                                                 | 1 matriz e 1 vetor                                | 1 vetor x                        | pablo       |	:x:	 |
-| Decomposiçao LU                                              | Uma matriz A                                      | Duas matrizes triangulares L e U | pablo       |	:x:	 |
+| Gauss-jordan                                                 | 1 matriz e 1 vetor                                | 1 vetor x                        | pablo       |	:white_check_mark:	 |
+| Decomposiçao LU                                              | Uma matriz A                                      | Duas matrizes triangulares L e U | pablo       |	:white_check_mark:	 |
 | Substituiçao reversa (ou recursiva)                          | 1 matriz triangular superior A e 1 vetor coluna b | vetor x                          | Gabi        |	:x:	 |
-| Substituição normal (ou recursiva)                           | 1 matriz triangular inferior A e 1 vetor coluna b | vetor x                          | gastao      |	:x:	 |
+| Substituição normal (ou recursiva)                           | 1 matriz triangular inferior A e 1 vetor coluna b | vetor x                          | gastao      |	:white_check_mark:	 |
 | Mínimos quadrados                                            | Matriz A e vetor b                                | Vetor x                          |             |	:x:	 |
-| Decomposição QR                                              | 1 matriz                                          | 2 matrizes                       | Gastão      |	:x:	 |
-| SVD (só o primeiro vetor)                                    | Conjunto de pontos: matriz                        | vetor v                          | gastao      |	:x:	 |
+| Decomposição QR                                              | 1 matriz                                          | 2 matrizes                       | Gastão      |	:white_check_mark:	 |
+| SVD (só o primeiro vetor)                                    | Conjunto de pontos: matriz                        | vetor v                          | gastao      |	:white_check_mark:	 |
 | Determinante                                                 | Uma matriz quadrada                               | escalar                          | pablo       |	:x:	 |
 | Produto vetorial                                             | 2 vetores p, q                                    | vetor r                          |             |	:x:	 |
 | Pseudo inversa                                               | matriz A                                          | matriz A*                        | gabi        |	:x:	 |
@@ -66,14 +66,14 @@ Qualquer dúvida, só perguntar! :blush:
 | Achar infinitas soluções de um sistema linear                | matriz A, vetor b                                 | ??                               |             |	:x:	 |
 | Achar nucleo soluçao sistema linear                          | 1 matriz                                          | conjunto vetores                 |             |	:x:	 |
 | Achar os b que o sistema Ax=b tem solução                    | lista de variáveis e relações entre elas          | vetor b                          |             |	:x:	 |
-| Sistema dinâmicos lineares                                   | Matriz A, um vetor x e um inteiro k               | Uma matriz C                     | gastao      |	:x:	 |
+| Sistema dinâmicos lineares                                   | Matriz A, um vetor x e um inteiro k               | Uma matriz C                     | gastao      |	:white_check_mark:	 |
 | Modelagem                                                    | lista de variáveis e relações entre elas          | uma matriz de solução            |             |	:x:	 |
-| Normas                                                       | 1 vetor b                                         | escalar c                        | Waldir      |	:x:	 |
-| Produto de matrizes (ou recursiva)                           | Duas matrizes A e B                               | Uma matriz C                     | Waldir      |	:x:	 |
-| Soma de matrizes (ou recursiva)                              | Duas matrizes A e B                               | Uma matriz X                     | Waldir      |	:x:	 |
+| Normas                                                       | 1 vetor b                                         | escalar c                        | Waldir      |	:white_check_mark:	 |
+| Produto de matrizes (ou recursiva)                           | Duas matrizes A e B                               | Uma matriz C                     | Waldir      |	:white_check_mark:	 |
+| Soma de matrizes (ou recursiva)                              | Duas matrizes A e B                               | Uma matriz X                     | Waldir      |	:white_check_mark:	 |
 | Encontrar Inversa                                            |                                                   |                                  |             |	:x:	 |
 | Testes: Matrizes do problemas de modelagem, aleatórias       | ??                                                |                                  |             |	:x:	 |
 | Gauss-Seidel                                                 | 1 matriz A, 1 vetor b                             | Um vetor x                       | pablo       |	:x:	 |
 | Gauss-Jacobi                                                 | 1 matriz A, 1 vetor b                             | Um vetor x                       | pablo       |	:x:	 |
-| Visualizações, input-output                                  |                                                   |                                  | pablo       |	:x:	 |
+| Visualizações, input-output                                  |                                                   |                                  | pablo       |	:white_check_mark:	 |
 | Transposta                                                   |                                                   |                                  |             |	:x:	 |
