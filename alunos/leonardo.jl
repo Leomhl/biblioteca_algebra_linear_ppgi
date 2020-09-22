@@ -44,7 +44,7 @@ end
 # Entradas: 2 matrizes
 # Saídas: 1 matriz
 #------------------------------------------------------------------------------------------
-function mat_mul(A, B)
+function multiplicar_matrizes(A, B)
     A = garante_matriz(A)
     B = garante_matriz(B)
 
@@ -115,6 +115,6 @@ end
 # Saídas: booleano (true ou false)
 #------------------------------------------------------------------------------------------
 function vetor_ortogonal_plano(v, P, tol=10e-5)
-    return norma(mat_mul(P, v)) <= tol
+    return norma(multiplicar_matrizes(P, v)) <= tol
 end
 
