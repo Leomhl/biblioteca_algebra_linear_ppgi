@@ -76,4 +76,4 @@ Qualquer dúvida, só perguntar! :blush:
 | Gauss-Seidel                                                 | 1 matriz A, 1 vetor b                             | Um vetor x                       | pablo       |	:x:	 |
 | Gauss-Jacobi                                                 | 1 matriz A, 1 vetor b                             | Um vetor x                       | pablo       |	:x:	 |
 | Visualizações, input-output                                  |                                                   |                                  | pablo       |	:white_check_mark:	 |
-| Transposta                                                   |                                                   |                                  |             |	:x:	 |
+| Transposta                                                   | 1 matriz ou um vetor A                            | Uma matriz ou um vetor A_transp  | Danilo      |	:white_check_mark:	 |
