@@ -309,3 +309,107 @@ function posto_matriz(A)
     end
     return rank
 end
+
+
+#-------------------------------------------------------------------------------
+# SVD: A função dá o vetor direção da "melhor" reta que se aproxima dos pontos dados.
+#
+# Entrada: uma matriz com os pontos dados
+# Saída: o vetor direção "v" da reta que melhor se aproxima dos pontos dados
+# Pré-funções: norma.
+# Autor: Gastão.
+#-------------------------------------------------------------------------------
+function SVD(pontos)
+    A=copy(pontos) #matriz criada com os pontos dados (Tem que testar se precisa pegar a transposta.)
+    v=A[:,1]       
+    v=v/norm(v)    #Primeiro candidato a "v" é o primeiro ponto (normalizado) dado (vendo os pontos como os vetores colunas de A).
+    erro=0         
+    erro_novo=norm(A-v*(A'*v)')  #O erro é verificado vendo a "distância" entre os pontos dados e a reta dada pelo vetor v".
+    
+    while(abs(erro-erro_novo)>0.01)    # A cada passo o erro diminui mas não necessariarmente converge para zero. 
+                                       # Queremos que o processo pare quando a diferença do novo erro para o antigo seja "pequeno".
+        erro=erro_novo
+        
+        for i=1:2
+            v=A'*v
+            v=v/norm(v)
+            A=A'
+            end                         # Depois desses dois processos temos o novo candidato a "melhor" v!!!
+         
+        erro_novo=norm(A-v*(v'*A))      
+        
+        println(erro)
+        println(erro_novo)
+        println(erro-erro_novo)         #Deixei os prints pra ver a variação do erro!!!
+        println()
+    end
+ 
+    return v                            # "Melhor" v!!!    
+end
+#-------------------------------------------------------------------------------
+function teste_SVD()      # Teste básico ainda!!!
+    pontos=[1 2 3; 2 4 6 ; 3 6 9; 4 8 12]
+    v=SVD(pontos')
+    println("O vetor v é ", v)
+    a=v=v/v[1]
+    println(a)
+    println()
+
+    pontos=[1 2 3; 2 4 6 ; 3 6 9; 4 8 15]
+    v=SVD(pontos')
+    println("O vetor v é ", v)
+    a=v=v/v[1]
+    println(a)
+    println()
+end
+
+
+#------------------------------------------------------------------------------------------
+# SISTEMAS DINÂMICOS LINEARES: A função dá o resultado de k iterações da matriz A aplicadas 
+# a partir do vetor x0.
+#
+# Entradas: 1 matriz quadrada, 1 vetor, 1 inteiro positivo
+# Saída: 1 vetor
+# Pré-funções: norma.
+# Autor: Gastão.
+#------------------------------------------------------------------------------------------
+function dinamica(A,x0,k)
+    x=x0               # Dado inicial.
+
+    for i=1:k           # k iterações.
+        x=A*x           # Matriz a sendo aplicada no resultado da iteração anterior.
+    end
+
+    return x            # Vetor resultado de todas as iterações.
+end
+#------------------------------------------------------------------------------------------
+function teste_dinamica(k)
+    Tudo_certo=true
+
+    # Uma dinâmica aplicada no vetor nulo sempre dará como resposta o vetor nulo.
+    for n=2:k
+        A=randn(n,n)                # Matriz A qualquer
+        x0=zeros(n,1)               # Dado inicial nulo
+        for i=1:k
+            x=dinamica(A,x0,i)      # Resultado da dinâmica
+            if norm(x)>0.00001      # Verificação se o resultado continua sendo o vetor nulo
+                Tudo_certo=false    
+            end
+        end
+    end
+
+    # Se a matriz for a identidade então ela não irá alterar o vetor.
+    for n=2:k
+        A=zeros(n,n)                  
+        for i=1:n A[i,i]=1 end       # Matriz A identidade
+        x0=randn(n,1)                # Dado inicial qualquer
+        for i=1:k
+            x=dinamica(A,x0,i)       # Resultado da dinâmica
+            if norm(x0-x)>0.00001    # Verifica se o resultado continua sendo o dado inicial
+                Tudo_certo=false
+            end
+        end
+    end
+
+    return Tudo_certo   
+end

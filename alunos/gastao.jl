@@ -98,17 +98,17 @@ end
 #    DECOMPOSIÇÃO QR
 #-------------------------------------------------------------------------------
 function decomposição_qr(A)
-    n,m=size(A)
-    dim=min(n,m)
-    Q=zeros(n,dim)
+    n,m=size(A)              
+    dim=min(n,m)                # O valor de parada do código é o menor valor entre a quantidade de linhas e colunas de A.
+    Q=zeros(n,dim)		
     R=zeros(dim,m)
-    for i=1:dim
+    for i=1:dim			# Construção das matrizes Q e R.		
         
-        Q[:,i]=A[:,i]/norm(A[:,i])
+        Q[:,i]=A[:,i]/norm(A[:,i])	# Coluna i de Q (normalizado)
         
-        R[i,:]=Q[:,i]'*A
+        R[i,:]=Q[:,i]'*A	# Linha i de R: Coeficientes dos vetores de A descritos na base Q por projeção (produto interno)
         
-        S=Q[:,i]*R[i,:]'    #S é a matriz a ser subtraída de A
+        S=Q[:,i]*R[i,:]'    	# S é a matriz a ser subtraída de A
 
         A=A-S        
     end
@@ -126,16 +126,17 @@ end
 #-------------------------------------------------------------------------------
 function decomposição_lu(A)
     n,m=size(A)
-    dim=min(n,m)
+    dim=min(n,m)                # O valor de parada do código é o menor valor entre a quantidade de linhas e colunas de A.
     L=zeros(n,dim)
     U=zeros(dim,m)
     
-    for i=1:dim
-        L[:,i]=A[:,i]/A[i,i]       #Coluna i de L
+    for i=1:dim			# Construção das matrizes Q e R.
 
-        U[i,:]=A[i,:]       #Linha i de U
+        L[:,i]=A[:,i]/A[i,i]    # Coluna i de L (Note que o elemento da diagonal principal é 1)
+
+        U[i,:]=A[i,:]	        # Linha i de U
         
-        S=L[:,i]*A[i,:]'    #S é a matriz que iremos subtrair: L[:,i]*U[i,:]
+        S=L[:,i]*A[i,:]' 	# S é a matriz que iremos subtrair: L[:,i]*U[i,:]
 
         A=A-S
     end
@@ -239,35 +240,15 @@ end
 #-------------------------------------------------------------------------------
 #    SVD
 #-------------------------------------------------------------------------------
-function erro(a,v)
-    p=projeção(a,v)
-    return norm(a-p)
-end
-#-------------------------------------------------------------------------------
-function erro_total(pontos,v)
-    erro=0
-    for i=1:length(pontos[:,1])
-        p=projeção(pontos[i,:],v)
-        erro+=erro(p-v)
-    end
-    return erro
-end
-#-------------------------------------------------------------------------------
-function matriz_erro(pontos,v)
-    return pontos'-projeção(pontos,v)
-end
-#-------------------------------------------------------------------------------
 # Preciso das funções: norma; multiplicação matricial; transposta.
-#Input: uma matriz com os pontos dados
-#Output: o vetor direção "v" da reta que melhor se aproxima dos pontos dados
+# Entrada: uma matriz com os pontos dados
+# Saída: o vetor direção "v" da reta que melhor se aproxima dos pontos dados
 function SVD(pontos)
     A=copy(pontos) #matriz criada com os pontos dados (Tem que testar se precisa pegar a transposta.)
     v=A[:,1]       
     v=v/norm(v)    #Primeiro candidato a "v" é o primeiro ponto (normalizado) dado (vendo os pontos como os vetores colunas de A).
     erro=0         
     erro_novo=norm(A-v*(A'*v)')  #O erro é verificado vendo a "distância" entre os pontos dados e a reta dada pelo vetor v".
-    
-    println(erro_novo)
     
     while(abs(erro-erro_novo)>0.01)    # A cada passo o erro diminui mas não necessariarmente converge para zero. 
                                        # Queremos que o processo pare quando a diferença do novo erro para o antigo seja "pequeno".
@@ -293,20 +274,26 @@ end
 #--------------------------------------------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------------------
 
 
 
 
 #--------------------------------------------------------------------------------------------------------------------------
-#    SISTEMAS DINÂMICOS
-#
+#    SISTEMAS DINÂMICOS LINEARES
+#------------------------------------------------------------------------------------------
+# A função dá o resultado de k iterações da matriz A aplicadas a partir do vetor x0
+# Entradas: 1 matriz, 1 vetor, 1 inteiro positivo
+# Saída: 1 vetor
+#------------------------------------------------------------------------------------------
 function dinamica(A,x0,k)
-    x=x_0
-    for i=1:k
-        x=A*x
+    x=x_0		# Dado inicial.
+
+    for i=1:k		# k iterações.
+        x=A*x		# Matriz a sendo aplicada no resultado da iteração anterior.
     end
 
-    return x
+    return x		# Vetor resultado de todas as iterações.
 end
 #--------------------------------------------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------------------------------------------
@@ -317,7 +304,7 @@ end
 
 #--------------------------------------------------------------------------------------------------------------------------
 #    INTERPOLAÇÃO
-#-------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------
 # Encontrando um candidatoa solução (Necessário para a função "interpolação"!).
 function candidato_solucao(pontos,grau,quantidade)
     X=ones(quantidade,grau+1)
@@ -332,7 +319,7 @@ function candidato_solucao(pontos,grau,quantidade)
     
    return X,A,Y 
 end
-#-------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------
 function interpolacao(pontos,grau)
     quantidade=length(pontos[:,1])
     if quantidade<grau+1
@@ -356,7 +343,7 @@ function interpolacao(pontos,grau)
         end
     end
 end
-#-------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------
 # Polinômio interpolador
 a=interpolacao(pontos,grau)
 p(x)=a[1]+sum( a[i] * x^(i-1) for i = 2:length(a))
