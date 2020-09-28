@@ -71,7 +71,7 @@ Qualquer dúvida, só perguntar! :blush:
 | Normas                                                       | 1 vetor b                                         | escalar c                        | Waldir      |	:white_check_mark:	 |
 | Produto de matrizes (ou recursiva)                           | Duas matrizes A e B                               | Uma matriz C                     | Waldir      |	:white_check_mark:	 |
 | Soma de matrizes (ou recursiva)                              | Duas matrizes A e B                               | Uma matriz X                     | Waldir      |	:white_check_mark:	 |
-| Encontrar Inversa                                            |                                                   |                                  |             |	:x:	 |
+| Encontrar Inversa                                            | Matriz A                                          | Matriz Inversa de A              | Danilo      |	:white_check_mark:	 |
 | Testes: Matrizes do problemas de modelagem, aleatórias       | ??                                                |                                  |             |	:x:	 |
 | Gauss-Seidel                                                 | 1 matriz A, 1 vetor b                             | Um vetor x                       | pablo       |	:x:	 |
 | Gauss-Jacobi                                                 | 1 matriz A, 1 vetor b                             | Um vetor x                       | pablo       |	:x:	 |
