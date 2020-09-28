@@ -1,6 +1,7 @@
 #-----------------------------------------------------------------------------------
 #Funções a serem implementadas:
 #Triangular - verificar se uma dada matriz é triangular
+#Transposta - calcular matriz transposta
 #Ortogonal - verificar se uma dada matriz é ortogonal
 #Ortonormal - verificar se um dado conjunto de vetores forma base ortonormal
 #Substituição reversa - para solução de sistemas de equações lineares
