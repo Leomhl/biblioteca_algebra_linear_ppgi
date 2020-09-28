@@ -288,11 +288,135 @@ end
 
 
 #------------------------------------------------------------------------------------------
+# Decomposição QR de uma matriz A.
+#
+# Entrada: uma matriz A.
+# Saída: uma matriz ortogonal Q e uma matriz R.
+# Autor: Gastão.
+#------------------------------------------------------------------------------------------
+function decomposição_qr(A)
+    n,m=size(A)              
+    dim=min(n,m)                # O valor de parada do código é o menor valor entre a quantidade de linhas e colunas de A.
+    Q=zeros(n,dim)		
+    R=zeros(dim,m)
+    for i=1:dim			# Construção das matrizes Q e R.		
+        
+        Q[:,i]=A[:,i]/norm(A[:,i])	# Coluna i de Q (normalizado)
+        
+        R[i,:]=Q[:,i]'*A	# Linha i de R: Coeficientes dos vetores de A descritos na base Q por projeção (produto interno)
+        
+        S=Q[:,i]*R[i,:]'    	# S é a matriz a ser subtraída de A
+
+        A=A-S        
+    end
+   return Q,R 
+end
+
+
+#------------------------------------------------------------------------------------------
+# Escalonamento com pivoteamento parcial de uma matriz quadrada não singular com pivôs não-nulos.
+#
+# Entrada: uma matriz quadrada não singular e um vetor linha b.
+# Saída: uma matriz quadrada não singular escalonada e um vetor linha b que geram
+# um sistema equivalente ao dos dados de entrada.
+# Autor: Gastão.
+#------------------------------------------------------------------------------------------
+function escalonamento_com_pivoteamento(A,b)
+    A_amp=[A b']     #Matriz ampliada de A
+    n,m=size(A)
+  
+    for pivo=1:(n-1)
+        A_amp=pivoteamento_parcial(A_amp,pivo)
+        A_amp=zerar_abaixo(A_amp,pivo)
+    end
+    
+    A=A_amp[:,1:m]
+    b=A_amp[:,m+1]
+    return A,b
+end
+#------------------------------------------------------------------------------------------
+function pivoteamento_parcial(A,pivo)
+    Ap=copy(A)
+    n_pivo=novo_pivo(Ap[:,pivo],pivo)
+    
+    linha=Ap[pivo,:]                 #troca as linhas
+    Ap[pivo,:]=Ap[n_pivo,:]
+    Ap[n_pivo,:]=linha
+    
+    return Ap
+end
+#------------------------------------------------------------------------------------------
+function novo_pivo(coluna,pivo)
+    
+    maximo=abs(coluna[pivo])
+    n_pivo=pivo
+        
+    for i=pivo:length(coluna)
+        if (abs(coluna[i]))>maximo
+            maximo=abs(coluna[i])
+            n_pivo=i
+        end
+    end
+    
+    return n_pivo
+end
+#------------------------------------------------------------------------------------------
+function zerar_abaixo(A,pivo)
+    n=length(A[:,pivo])
+
+    for i=pivo+1:n
+    
+        A[i,:]+=-(A[i,pivo]/A[pivo,pivo])A[pivo,:]
+    end
+    
+    return A
+end
+
+
+#------------------------------------------------------------------------------------------
+# Substituição reversa em uma matriz triangular superior quadrada não-singular.
+#
+# Entrada: uma matriz quadrada triangular não singular A e um vetor linha b
+# Saída: o vetor x, solução de Ax=b.
+# Autor: Gastão.
+#------------------------------------------------------------------------------------------
+function retrosubstituicao_triangular_superior_quadrada(A,b)
+    n=length(b)
+    x=zeros(n)
+    D=0
+     
+    for i=n:-1:1
+
+        D=A[i,:]'*x
+        
+        x[i]=(b[i]-D)/A[i,i]
+    end
+    
+    return x 
+end
+
+
+#------------------------------------------------------------------------------------------
+# Eliminação gaussiana com pivoteamento parcial de uma matriz quadrada não singular com pivôs não-nulos.
+#
+# Entrada: uma matriz com os pontos dados.
+# Saída: o vetor direção "v" da reta que melhor se aproxima dos pontos dados.
+# Autor: Gastão.
+#------------------------------------------------------------------------------------------
+function resolver_escalonamento_com_pivoteamento(A,b)
+    A,b=escalonamento_com_pivoteamento(A,b)
+    x=retrosubstituicao_triangular_superior_quadrada(A,b)
+   return x
+end
+#------------------------------------------------------------------------------------------
+
+
+#------------------------------------------------------------------------------------------
 # Calcula o posto de uma Matriz, que corresponte ao número de linhas ou colunas 
 # linearmente independentes da matriz.
 # 
-# Entradas: 1 vetores
-# Saídas: inteiro
+# Entradas: 1 vetores.
+# Saídas: inteiro.
 #------------------------------------------------------------------------------------------
 function posto_matriz(A)
     U = eliminacao_gaussiana(A)
@@ -311,14 +435,14 @@ function posto_matriz(A)
 end
 
 
-#-------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------
 # SVD: A função dá o vetor direção da "melhor" reta que se aproxima dos pontos dados.
 #
 # Entrada: uma matriz com os pontos dados
 # Saída: o vetor direção "v" da reta que melhor se aproxima dos pontos dados
 # Pré-funções: norma.
 # Autor: Gastão.
-#-------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------
 function SVD(pontos)
     A=copy(pontos) #matriz criada com os pontos dados (Tem que testar se precisa pegar a transposta.)
     v=A[:,1]       
@@ -346,7 +470,7 @@ function SVD(pontos)
  
     return v                            # "Melhor" v!!!    
 end
-#-------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------
 function teste_SVD()      # Teste básico ainda!!!
     pontos=[1 2 3; 2 4 6 ; 3 6 9; 4 8 12]
     v=SVD(pontos')
@@ -368,8 +492,8 @@ end
 # SISTEMAS DINÂMICOS LINEARES: A função dá o resultado de k iterações da matriz A aplicadas 
 # a partir do vetor x0.
 #
-# Entradas: 1 matriz quadrada, 1 vetor, 1 inteiro positivo
-# Saída: 1 vetor
+# Entradas: 1 matriz quadrada, 1 vetor, 1 inteiro positivo.
+# Saída: 1 vetor.
 # Pré-funções: norma.
 # Autor: Gastão.
 #------------------------------------------------------------------------------------------

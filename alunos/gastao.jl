@@ -206,28 +206,63 @@ end
 
 
 
-#    ELIMINAÇÃO GAUSSIANA
+
+#--------------------------------------------------------------------------------------------------------------------------
+#    ESCALONAMENTO COM PIVOTEAMENTO PARCIAL (MATRIZ QUADRADA, PIVO NÃO NULO)
 #-------------------------------------------------------------------------------
-function eliminacao(A,b)
-    n=length(b)
-   
-    for i=1:(n-1)
-   
-        for k = (i+1):n # na coluna
-            b[k]=b[k]-(A[k,i]/A[i,i])*b[i]
-            A[k,:]=A[k,:]-(A[k,i]/A[i,i])*A[i,:]
-        end  
-   
-    end    
+# Entrada: uma matriz quadrada não singular e um vetor linha b
+# Saída: uma matriz quadrada não singular escalonada e um vetor linha b que geram
+# um sistema equivalente ao dos dados de entrada.
+#-------------------------------------------------------------------------------
+function escalonamento_com_pivoteamento(A,b)
+    A_amp=[A b']     #Matriz ampliada de A
+    n,m=size(A)
+  
+    for pivo=1:(n-1)
+        A_amp=pivoteamento_parcial(A_amp,pivo)
+        A_amp=zerar_abaixo(A_amp,pivo)
+    end
+    
+    A=A_amp[:,1:m]
+    b=A_amp[:,m+1]
     return A,b
-end  
+end
 #-------------------------------------------------------------------------------
-#    RESOLVER SISTEMA LINEAR POR ELIMINAÇÃO GAUSSIANA
-#
-function resolver(A,b)
-    A,b = eliminacao(A,b)
-    x = subs_reversa(A,b)
-    return x
+function pivoteamento_parcial(A,pivo)
+    Ap=copy(A)
+    n_pivo=novo_pivo(Ap[:,pivo],pivo)
+    
+    linha=Ap[pivo,:]                 #troca as linhas
+    Ap[pivo,:]=Ap[n_pivo,:]
+    Ap[n_pivo,:]=linha
+    
+    return Ap
+end
+#-------------------------------------------------------------------------------
+function novo_pivo(coluna,pivo)
+    
+    maximo=abs(coluna[pivo])
+    n_pivo=pivo
+        
+    for i=pivo:length(coluna)
+        if (abs(coluna[i]))>maximo
+            maximo=abs(coluna[i])
+            n_pivo=i
+        end
+    end
+    
+    return n_pivo
+end
+#-------------------------------------------------------------------------------
+function zerar_abaixo(A,pivo)
+    n=length(A[:,pivo])
+
+    for i=pivo+1:n
+    
+        A[i,:]+=-(A[i,pivo]/A[pivo,pivo])A[pivo,:]
+    end
+    
+    return A
 end
 #--------------------------------------------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------------------------------------------
@@ -238,11 +273,52 @@ end
 
 
 #-------------------------------------------------------------------------------
+
+
+
+
+#--------------------------------------------------------------------------------------------------------------------------
+#    ELIMINAÇÃO GAUSSIANA COM PIVOTEAMENTO PARCIAL (MATRIZ QUADRADA, PIVO NÃO NULO)
+#-------------------------------------------------------------------------------
+# Preciso das funções: norma; multiplicação matricial; transposta.
+# Entrada: uma matriz com os pontos dados
+# Saída: o vetor direção "v" da reta que melhor se aproxima dos pontos dados
+#-------------------------------------------------------------------------------
+function resolver_escalonamento_com_pivoteamento(A,b)
+    A,b=escalonamento_com_pivoteamento(A,b)
+    x=retrosubstituicao_triangular_superior_quadrada(A,b)
+   return x
+end
+#-------------------------------------------------------------------------------
+function retrosubstituicao_triangular_superior_quadrada(A,b)
+    n=length(b)
+    x=zeros(n)
+    D=0
+     
+    for i=n:-1:1
+
+        D=A[i,:]'*x
+        
+        x[i]=(b[i]-D)/A[i,i]
+    end
+    
+    return x 
+end
+#--------------------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+#--------------------------------------------------------------------------------------------------------------------------
 #    SVD
 #-------------------------------------------------------------------------------
 # Preciso das funções: norma; multiplicação matricial; transposta.
 # Entrada: uma matriz com os pontos dados
 # Saída: o vetor direção "v" da reta que melhor se aproxima dos pontos dados
+#-------------------------------------------------------------------------------
 function SVD(pontos)
     A=copy(pontos) #matriz criada com os pontos dados (Tem que testar se precisa pegar a transposta.)
     v=A[:,1]       
