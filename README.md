@@ -46,15 +46,15 @@ Qualquer dúvida, só perguntar! :blush:
 | Se duas retas são ortogonais                                 | 2 retas: 2 vetores: u,v                           | booleano                         | waldir      |	:white_check_mark:	 |
 | Se uma vetor é ortogonal a um plano                          | 1 reta, 1 plano                                   | booleano                         | leo         |	:white_check_mark:	 |
 | Eliminação Gaussiana                                         | 1 matriz quadrada A e 1 vetor coluna b            | Um vetor x                       | gastao      |	:white_check_mark:	 |
-| Verificar se uma matriz é triangular                         | 1 matriz                                          | booleano                         | gabi        |	:x:	 |
-| Verificar se uma matriz é ortogonal                          | 1 matriz A                                        | booleano                         | gabi        |	:x:	 |
-| Verficar se um conjunto de vetores forma uma base ortonormal | Conjunto de vetores                               |                                  | Gabi        |	:x:	 |
+| Verificar se uma matriz é triangular                         | 1 matriz                                          | booleano                         | gabi        |	:white_check_mark: |
+| Verificar se uma matriz é ortogonal                          | 1 matriz A                                        | booleano                         | gabi        |	:white_check_mark: |
+| Verficar se um conjunto de vetores forma uma base ortonormal | Conjunto de vetores                               |                                  | Gabi        |	:white_check_mark:	 |
 | Projeção de um vetor em uma reta                             | Vetor u e vetor direção da reta v                 | Vetor projetado a                | waldir      |	:white_check_mark:	 |
 | Projeção de um vetor em um plano                             | 1 vetor, 1 plano                                  |                                  | waldir      |	:white_check_mark:	 |
 | Verificar se uma matriz é inversível                         | 1 matriz                                          | booleano                         |             |	:x:	 |
 | Gauss-jordan                                                 | 1 matriz e 1 vetor                                | 1 vetor x                        | pablo       |	:white_check_mark:	 |
 | Decomposiçao LU                                              | Uma matriz A                                      | Duas matrizes triangulares L e U | pablo       |	:white_check_mark:	 |
-| Substituiçao reversa (ou recursiva)                          | 1 matriz triangular superior A e 1 vetor coluna b | vetor x                          | Gabi        |	:x:	 |
+| Substituiçao reversa (ou recursiva)                          | 1 matriz triangular superior A e 1 vetor coluna b | vetor x                          | Gabi        |	:white_check_mark:	 |
 | Substituição normal (ou recursiva)                           | 1 matriz triangular inferior A e 1 vetor coluna b | vetor x                          | gastao      |	:white_check_mark:	 |
 | Mínimos quadrados                                            | Matriz A e vetor b                                | Vetor x                          |             |	:x:	 |
 | Decomposição QR                                              | 1 matriz                                          | 2 matrizes                       | Gastão      |	:white_check_mark:	 |
