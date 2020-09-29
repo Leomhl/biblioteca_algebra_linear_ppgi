@@ -1,24 +1,3 @@
-using LinearAlgebra
-
-#motivo: nao foi implementada funcao identidade, portanto para usar I foi necessario o LinearAlgebra
-
-#******************************************************************************************
-#matrizes para testes
-notTriangularMatrix = [-1 1/4 1/4 0;
-                        1/4 -1 0 1/4;
-                        1/4 0 -1 1/4;
-                        0 1/4 1/4 -1]
-
-upperTriangularMatrix = [-1 1/4 1/4 0;
-                        0 -1 -1 1/4;
-                        0 0 1/4 1/4;
-                        0 0 0 -1]
-
-lowerTriangularMatrix = [-1 0 0 0;
-                        1/4 -1 0 0;
-                        1/4 0 -1 0;
-                        0 1/4 1/4 -1]
-
 #******************************************************************************************
 # VALOR MAXIMO
 #Retorna o maior valor de um vetor
@@ -33,6 +12,14 @@ function valor_maximo(v)
     return m
 end
 
+
+function identidade(n)
+	I=zeros(n,n)                  
+	for i=1:n 
+		I[i,i]=1 
+	end 
+	return I      # Matriz A identidade
+end
 
 #******************************************************************************************
 # GARANTE VETOR
@@ -99,8 +86,6 @@ function soma_mat_rec(A, B...) # B... significa um número variável de argument
 end
 
 
-
-
 #******************************************************************************************
 # MULTIPLICACAO Multiplicação de duas matrizes
 # Entradas: 2 matrizes
@@ -142,8 +127,6 @@ function prod_mat_rec(A, B...) # B... significa um número variável de argument
 end
 
 
-
-
 #******************************************************************************************
 # PRODUTO INTERNO Produto interno entre dois vetores
 # Entradas: 2 vetores
@@ -173,7 +156,7 @@ end
 
 #******************************************************************************************
 #NORMA VETOR
-function NormVector(V)
+function norma_vetor(V)
    n = length(V);
    S = 0;
    for i = 1:n
@@ -185,7 +168,7 @@ end
 
 #******************************************************************************************
 #NORMA MATRIZ
-function NormMatrix(A)
+function norma_matriz(A)
    m,n = size(A);
    S = 0;
    for i = 1:m
@@ -204,7 +187,6 @@ end
 function norma_do_maximo(a) 
     return valor_maximo(abs.(a))
 end 
-
 
 
 #******************************************************************************************
@@ -260,36 +242,6 @@ function transposta(A)
     end
 end
 
-#-------------------------------------------------------------------------------------
-# TESTE TRANSPOSTA
-#
-# Verifica se matrizes aleatórias de dimensões diferentes são transpostas corretamente.
-# A verificação compara cada linha da matriz original, com a coluna da matriz transposta.
-# Se a transposição aconteceu corretamente, elas devem ser iguais
-#--------------------------------------------------------------------------------------
-
-function verificacao_transposta(A, A_transposta)
-    
-    if size(A) == (1,)             #verifica se A é um vetor unitário.
-        return A == a_transposta   #Se sim, o compara diretamente com a transposta
-    else
-    
-        m,n = size(A)
-
-        for i=1:m  #para cada coluna de A
-            if A[i,:] == A_transposta[:,i] #Se a coluna de A é igual à linha de A_transposta
-
-            else
-                return false #Senão, não é a transposta
-                break
-            end
-        end
-        return true #Caso todas as colunas de A sejam iguais às linhas de A_transposta
-    end
-end
-
-
-
 
 #******************************************************************************************
 #TRANSPOSTA
@@ -328,12 +280,6 @@ function transposta(matrix)
     end
     return transposta 
 end
-
-#teste
-#eh_triangular(transposta(upperTriangularMatrix))
-transposta(upperTriangularMatrix)
-
-
 
 
 #******************************************************************************************
@@ -393,7 +339,7 @@ function ortogonal(matrix)
         if numberOfLines == numberOfColumns
             matriz_transposta = transposta(matrix)
             #se matrix^T * matriz = Id, é ortogonal
-            if matriz_transposta*matrix == I
+            if matriz_transposta*matrix == identidade(numberOfLines)
                 return true
             else
                 return false
@@ -407,10 +353,6 @@ function ortogonal(matrix)
         throw(ArgumentError("'matrix' parameter should be a matrix"))
     end
 end
-
-
-#teste
-ortogonal([1 0; 0 1])
 
 
 #******************************************************************************************
@@ -442,14 +384,14 @@ function base_ortonormal(set_of_vectors)
             #para cada vetor, ele deve ter o mesmo tamanho do primeiro e comprimento 1
             for vector in set_of_vectors
                 if numberOfLines == size(vector)[1] && numberOfColumns == size(vector)[2] && 
-                    norm(vector) <= 1.001 && norm(vector) >= 0.999
+                    norma(vector) <= 1.001 && norma(vector) >= 0.999
                     continue
                 else
                     return false
                 # cada par de vetor devera ser ortogonal entre si
                 for vector2 in set_of_vectors
                     #if dois_vetores_ortogonais(vector,vector2) == true
-                    if dot(vector,vector2) == 0   
+                    if produto_interno(vector,vector2) == 0   
                         continue
                     else
                         return false     
@@ -465,12 +407,6 @@ function base_ortonormal(set_of_vectors)
     #se chegamos ate aqui, é pq a base é ortonormal
     return true
 end
-
-#teste para base ortonormal
-set_of_vectors = [[1/sqrt(2) 0 -1/sqrt(2)], [1/2 sqrt(2)/2 1/2], [1/2 -sqrt(2)/2 1/2]]
-
-#teste
-base_ortonormal([[1/sqrt(2) 0 -1/sqrt(2)], [1/2 sqrt(2)/2 1/2], [1/2 -sqrt(2)/2 1/2]])
 
 
 #******************************************************************************************
@@ -508,7 +444,7 @@ function decomposição_qr(A)
     R=zeros(dim,m)
     for i=1:dim			# Construção das matrizes Q e R.		
         
-        Q[:,i]=A[:,i]/norm(A[:,i])	# Coluna i de Q (normalizado)
+        Q[:,i]=A[:,i]/norma(A[:,i])	# Coluna i de Q (normalizado)
         
         R[i,:]=Q[:,i]'*A	# Linha i de R: Coeficientes dos vetores de A descritos na base Q por projeção (produto interno)
         
@@ -527,7 +463,7 @@ function fatorizacao_qr(A)
    m,n = size(A);
    Q = zeros(n,n);
    R = zeros(n,n);
-   Q[:,1]=(1/norm(A[:,1]))*A[:,1];
+   Q[:,1]=(1/norma(A[:,1]))*A[:,1];
    for j = 2:n
        #Obter Q por Normalizacao do vetor D
        P = zeros(n);
@@ -535,7 +471,7 @@ function fatorizacao_qr(A)
            P  = P + (A[:,j]'*Q[:,k])*Q[:,k];
        end
        D = A[:,j] - P;
-       Q[:,j]=(1/norm(D))*D;
+       Q[:,j]=(1/norma(D))*D;
    end
    R = Q'A;
    return Q, R
@@ -559,7 +495,7 @@ end
 #Autora: gabriella radke
 #-------------------------------------------------------------------------------------
 
-function eh_triangular(matrix, upper = true)
+function e_triangular(matrix, upper = true)
 
     #checamos se a entrada de fato é uma matriz
     if isa(matrix, Array{Float64,2}) == true  || isa(matrix, Array{Int64,2}) == true
@@ -611,10 +547,6 @@ end
 
 
 
-#teste
-eh_triangular(upperTriangularMatrix)
-
-
 #******************************************************************************************
 # SUBTITUICAO Substituição reversa em uma matriz triangular superior quadrada não-singular.
 #
@@ -659,7 +591,7 @@ function substituicao(matrix,vector)
                     'vector' should be a nx1 array"))
         end
         #caso matriz seja triangular inferior
-        if eh_triangular(matrix,false) == true  
+        if e_triangular(matrix,false) == true  
             #susbtituicao!
             x = zeros(numberOfLines)
             x[1] = vector[1]/matrix[1,1]
@@ -668,7 +600,7 @@ function substituicao(matrix,vector)
                         end 
             return x
         #Caso matriz for triangular superior
-        elseif eh_triangular(matrix,true) == true
+        elseif e_triangular(matrix,true) == true
                 #substituicao!
                 x = zeros(numberOfLines) 
                 x[numberOfLines] = vector[numberOfLines]/matrix[numberOfLines,numberOfColumns]
@@ -682,13 +614,6 @@ function substituicao(matrix,vector)
     end
 end 
 
-#teste
-b = randn(3,1)
-A = [1.0      0.0      0.0;
- 2.12374  1.0      0.0;
- 1.20021  1.04731  1.0]
-
-print(A*substituicao(A,b), b)
 
 #******************************************************************************************
 # SUBSTITUICAO Obtenção do vetor X de soluções do Sistema Linear AX = B
@@ -786,7 +711,6 @@ function resolver_escalonamento_com_pivoteamento(A,b)
    return x
 end
 
-
 #******************************************************************************************
 # ELIMINICAO GAUSS Processo de Transformação das matrizes A e B 
 # para obter uma Matriz Triangular Superior
@@ -824,7 +748,7 @@ end
 # GAUSS JORDAN Processo de Transformação das matrizes A e B 
 # para obter uma Matriz Diagonal
 #------------------------------------------------------------------------------------------
-function GaussJordan(A,B)
+function gauss_jordan(A,B)
    m,n = size(A);
    X = zeros(n);
    for j = 1:n
@@ -863,7 +787,7 @@ end
 # DECOMPOSICAO LU Fatoração LU1 baseado em Aproximaçôes de Matrizes de Posto 1
 # Diagonal da Matriz Triangular Superior U con 1s
 #------------------------------------------------------------------------------------------
-function Factorization_LU1(A)
+function factorization_LU1(A)
   m,n = size(A);
   p = min(m,n);
   L = zeros(m,p);
@@ -949,19 +873,6 @@ function inversa(A)
 end
 
 
-#-------------------------------------------------------------------------------------
-# TESTE INVERSA
-#
-# Verifica se A*A^-1 = I
-#--------------------------------------------------------------------------------------
-function testa_matriz_inversa(A, inversa_A)
-    if norm((A*inversa_A) - I) < 0.000001 # Se a norma de A*A^-1 - I é proxima de 0
-        return true
-    else
-        return false
-    end
-end
-
 
 #******************************************************************************************
 # SVD: A função dá o vetor direção da "melhor" reta que se aproxima dos pontos dados.
@@ -974,9 +885,9 @@ end
 function SVD(pontos)
     A=copy(pontos) #matriz criada com os pontos dados (Tem que testar se precisa pegar a transposta.)
     v=A[:,1]       
-    v=v/norm(v)    #Primeiro candidato a "v" é o primeiro ponto (normalizado) dado (vendo os pontos como os vetores colunas de A).
+    v=v/norma(v)    #Primeiro candidato a "v" é o primeiro ponto (normalizado) dado (vendo os pontos como os vetores colunas de A).
     erro=0         
-    erro_novo=norm(A-v*(A'*v)')  #O erro é verificado vendo a "distância" entre os pontos dados e a reta dada pelo vetor v".
+    erro_novo=norma(A-v*(A'*v)')  #O erro é verificado vendo a "distância" entre os pontos dados e a reta dada pelo vetor v".
     
     while(abs(erro-erro_novo)>0.01)    # A cada passo o erro diminui mas não necessariarmente converge para zero. 
                                        # Queremos que o processo pare quando a diferença do novo erro para o antigo seja "pequeno".
@@ -984,11 +895,11 @@ function SVD(pontos)
         
         for i=1:2
             v=A'*v
-            v=v/norm(v)
+            v=v/norma(v)
             A=A'
             end                         # Depois desses dois processos temos o novo candidato a "melhor" v!!!
          
-        erro_novo=norm(A-v*(v'*A))      
+        erro_novo=norma(A-v*(v'*A))      
         
         println(erro)
         println(erro_novo)
@@ -1078,37 +989,6 @@ function dinamica(A,x0,k)
 end
 #------------------------------------------------------------------------------------------
 
-function teste_dinamica(k)
-    Tudo_certo=true
-
-    # Uma dinâmica aplicada no vetor nulo sempre dará como resposta o vetor nulo.
-    for n=2:k
-        A=randn(n,n)                # Matriz A qualquer
-        x0=zeros(n,1)               # Dado inicial nulo
-        for i=1:k
-            x=dinamica(A,x0,i)      # Resultado da dinâmica
-            if norm(x)>0.00001      # Verificação se o resultado continua sendo o vetor nulo
-                Tudo_certo=false    
-            end
-        end
-    end
-
-    # Se a matriz for a identidade então ela não irá alterar o vetor.
-    for n=2:k
-        A=zeros(n,n)                  
-        for i=1:n A[i,i]=1 end       # Matriz A identidade
-        x0=randn(n,1)                # Dado inicial qualquer
-        for i=1:k
-            x=dinamica(A,x0,i)       # Resultado da dinâmica
-            if norm(x0-x)>0.00001    # Verifica se o resultado continua sendo o dado inicial
-                Tudo_certo=false
-            end
-        end
-    end
-
-    return Tudo_certo   
-end
-
 #******************************************************************************************
 # JACOBI Metodo de Jacobi
 # Realiza Aproximações Sucesivas para obter a Solução
@@ -1119,7 +999,7 @@ function jacobi(A,B,E)
    Y = rand(n);
    X = zeros(n);
    t = 0;
-   while NormVector(X-Y)>E
+   while norma_vetor(X-Y)>E
       t = t + 1;
       Y = copy(X)
       for i = 1:n
@@ -1145,7 +1025,7 @@ function gauss_Seidel(A,B,E)
    Y = rand(n);
    X = zeros(n);
    t = 0;
-   while NormVector(X-Y)>E
+   while norma_vetor(X-Y)>E
       t = t + 1;
       Y = copy(X)
       for i = 1:n
@@ -1280,7 +1160,7 @@ end
 # Imprime os elementos da matriz A e do vetor B 
 # considerando "PI" Posições Inteiras e "PD" Posições Decimais
 #------------------------------------------------------------------------------------------
-function imprimeSistemaLinear(A,B,PI,PD)
+function imprime_sistema_linear(A,B,PI,PD)
    m,n = size(A)
    for i = 1:m
        for j = 1:n
@@ -1364,7 +1244,7 @@ end
 #******************************************************************************************
 # Resultados da Matriz em Arquivo HTML
 #------------------------------------------------------------------------------------------
-function MatrixToHTML(A,PD,FILE,ShowIndex,ShowDiagonal,Title)
+function matrizParaHTML(A,PD,FILE,ShowIndex,ShowDiagonal,Title)
    #-------------------------------------------------------------------------------
    F = open(FILE,"w");
    #-------------------------------------------------------------------------------
@@ -1399,7 +1279,7 @@ function simulacao_QR(A,PD,FILE)
    m,n = size(A);
    Q = zeros(n,n);
    R = zeros(n,n);
-   Q[:,1]=(1/norm(A[:,1]))*A[:,1];
+   Q[:,1]=(1/norma(A[:,1]))*A[:,1];
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    write(F,"<SPAN CLASS=TITLE>Passo 1: Inicio</SPAN>\n<HR>\n");
    write(F,"<SPAN CLASS=TITLE>Matriz Q</SPAN>\n");
@@ -1411,7 +1291,7 @@ function simulacao_QR(A,PD,FILE)
            P  = P + (A[:,j]'*Q[:,k])*Q[:,k]
        end         
        D = A[:,j] - P
-       Q[:,j]=(1/norm(D))*D
+       Q[:,j]=(1/norma(D))*D
        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
        write(F,"<SPAN CLASS=TITLE>Passo ",string(j),"</SPAN>\n<HR>\n");
        write(F,"<SPAN CLASS=TITLE>Matriz Q</SPAN>\n");
