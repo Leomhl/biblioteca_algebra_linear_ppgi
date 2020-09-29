@@ -322,24 +322,24 @@ end
 # Autor: Gastão.
 #------------------------------------------------------------------------------------------
 function escalonamento_com_pivoteamento(A,b)
-    A_amp=[A b']     #Matriz ampliada de A
+    A_amp=[A b']                                   # Matriz ampliada de A
     n,m=size(A)
   
-    for pivo=1:(n-1)
-        A_amp=pivoteamento_parcial(A_amp,pivo)
-        A_amp=zerar_abaixo(A_amp,pivo)
+    for pivo=1:(n-1)                                
+        A_amp=pivoteamento_parcial(A_amp,pivo)     # Encontra um "novo" pivô.
+        A_amp=zerar_abaixo(A_amp,pivo)             # Zera os elementos abaixo do pivô, 
     end
     
-    A=A_amp[:,1:m]
+    A=A_amp[:,1:m]                                 # Matrizes resultantes do escalonamento.
     b=A_amp[:,m+1]
     return A,b
 end
 #------------------------------------------------------------------------------------------
 function pivoteamento_parcial(A,pivo)
     Ap=copy(A)
-    n_pivo=novo_pivo(Ap[:,pivo],pivo)
+    n_pivo=novo_pivo(Ap[:,pivo],pivo)              # "Novo" pivô (pode ser o original).
     
-    linha=Ap[pivo,:]                 #troca as linhas
+    linha=Ap[pivo,:]                               # Troca as linhas do pivô original com a do novo pivô.
     Ap[pivo,:]=Ap[n_pivo,:]
     Ap[n_pivo,:]=linha
     
@@ -348,11 +348,11 @@ end
 #------------------------------------------------------------------------------------------
 function novo_pivo(coluna,pivo)
     
-    maximo=abs(coluna[pivo])
+    maximo=abs(coluna[pivo])             # Pivô original
     n_pivo=pivo
         
-    for i=pivo:length(coluna)
-        if (abs(coluna[i]))>maximo
+    for i=pivo:length(coluna)            # Procura o maior valor entre as células abaixo da célula
+        if (abs(coluna[i]))>maximo       # do pivô e transforma indica essa célula como a do novo pivô.
             maximo=abs(coluna[i])
             n_pivo=i
         end
@@ -365,9 +365,8 @@ function zerar_abaixo(A,pivo)
     n=length(A[:,pivo])
 
     for i=pivo+1:n
-    
-        A[i,:]+=-(A[i,pivo]/A[pivo,pivo])A[pivo,:]
-    end
+        A[i,:]+=-(A[i,pivo]/A[pivo,pivo])A[pivo,:]     # Modifica todas as linhas abaixo da linha do pivô,
+    end                                                # zerando os elementos abaixo deste.
     
     return A
 end
@@ -385,11 +384,11 @@ function retrosubstituicao_triangular_superior_quadrada(A,b)
     x=zeros(n)
     D=0
      
-    for i=n:-1:1
+    for i=n:-1:1                             # Indo da última incógnita para a primeira.
 
-        D=A[i,:]'*x
+        D=A[i,:]'*x                          # Substituímos os valores anteriores.
         
-        x[i]=(b[i]-D)/A[i,i]
+        x[i]=(b[i]-D)/A[i,i]                 # Valor da i-ésima incógnita.
     end
     
     return x 
@@ -404,8 +403,8 @@ end
 # Autor: Gastão.
 #------------------------------------------------------------------------------------------
 function resolver_escalonamento_com_pivoteamento(A,b)
-    A,b=escalonamento_com_pivoteamento(A,b)
-    x=retrosubstituicao_triangular_superior_quadrada(A,b)
+    A,b=escalonamento_com_pivoteamento(A,b)                        # Escalona o sistema.
+    x=retrosubstituicao_triangular_superior_quadrada(A,b)          # Dá a solução do sistema pelo escalonamento.
    return x
 end
 #------------------------------------------------------------------------------------------
@@ -471,21 +470,6 @@ function SVD(pontos)
     return v                            # "Melhor" v!!!    
 end
 #------------------------------------------------------------------------------------------
-function teste_SVD()      # Teste básico ainda!!!
-    pontos=[1 2 3; 2 4 6 ; 3 6 9; 4 8 12]
-    v=SVD(pontos')
-    println("O vetor v é ", v)
-    a=v=v/v[1]
-    println(a)
-    println()
-
-    pontos=[1 2 3; 2 4 6 ; 3 6 9; 4 8 15]
-    v=SVD(pontos')
-    println("O vetor v é ", v)
-    a=v=v/v[1]
-    println(a)
-    println()
-end
 
 
 #------------------------------------------------------------------------------------------
@@ -507,33 +491,3 @@ function dinamica(A,x0,k)
     return x            # Vetor resultado de todas as iterações.
 end
 #------------------------------------------------------------------------------------------
-function teste_dinamica(k)
-    Tudo_certo=true
-
-    # Uma dinâmica aplicada no vetor nulo sempre dará como resposta o vetor nulo.
-    for n=2:k
-        A=randn(n,n)                # Matriz A qualquer
-        x0=zeros(n,1)               # Dado inicial nulo
-        for i=1:k
-            x=dinamica(A,x0,i)      # Resultado da dinâmica
-            if norm(x)>0.00001      # Verificação se o resultado continua sendo o vetor nulo
-                Tudo_certo=false    
-            end
-        end
-    end
-
-    # Se a matriz for a identidade então ela não irá alterar o vetor.
-    for n=2:k
-        A=zeros(n,n)                  
-        for i=1:n A[i,i]=1 end       # Matriz A identidade
-        x0=randn(n,1)                # Dado inicial qualquer
-        for i=1:k
-            x=dinamica(A,x0,i)       # Resultado da dinâmica
-            if norm(x0-x)>0.00001    # Verifica se o resultado continua sendo o dado inicial
-                Tudo_certo=false
-            end
-        end
-    end
-
-    return Tudo_certo   
-end
