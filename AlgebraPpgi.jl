@@ -1,3 +1,4 @@
+using LinearAlgebra
 #******************************************************************************************
 #matrizes para testes
 notTriangularMatrix = [-1 1/4 1/4 0;
