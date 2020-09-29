@@ -47,7 +47,9 @@ function teste_qr(k)
             A=randn(n,m)
             Q,R=decomposição_qr(A)
             if norm(A-Q*R)>0.00001
-                Tudo_certo=false
+                if Q*Q'!=I
+                    Tudo_certo=false
+                end
             end
         end
     end
@@ -76,6 +78,8 @@ function teste_lu(k)
             A=randn(n,m)
             L,U=decomposição_lu(A)
             if norm(A-L*U)>0.00001
+                # L é triangular inferior?
+                # U é triangular superior?
                 Tudo_certo=false
             end
         end
