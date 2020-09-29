@@ -442,7 +442,7 @@ function orthonormal_base(set_of_vectors)
                     continue
                 else
                     return false
-                #cada par de vetor devera ser ortogonal entre si
+                # cada par de vetor devera ser ortogonal entre si
                 for vector2 in set_of_vectors
                     #if dois_vetores_ortogonais(vector,vector2) == true
                     if dot(vector,vector2) == 0   
@@ -1073,8 +1073,7 @@ function dinamica(A,x0,k)
     return x            # Vetor resultado de todas as iterações.
 end
 #------------------------------------------------------------------------------------------
-<<<<<<< HEAD
-=======
+
 function teste_dinamica(k)
     Tudo_certo=true
 
