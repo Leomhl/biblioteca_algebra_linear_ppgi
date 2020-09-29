@@ -600,6 +600,132 @@ function Simulation_LU1(A,PD,FILE)
 end
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
+#----------------------------------------------------------------------
+# P R O C E S S O S   D E   T E S T E   E   S I M U L A Ç Ã O
+#----------------------------------------------------------------------
+# Simulação da EliminacaoGaussiana baseado em Matriz Triangular Superior
+#----------------------------------------------------------------------
+function Teste_EliminacaoGaussiana_TS(AA,BB,PI,PD)
+   println("---------------------------------------------------------------------------");
+   println("T R A N S F O R M A Ç Ã O   P O R   E L I M I N A Ç Ã O   G A U S S I A N A");
+   println("---------------------------------------------------------------------------");
+   println("\nDado o Sistema Linear Ax=B\n");
+   A = copy(AA);
+   B = copy(BB);
+   PrintLinearSystem(A,B,PI,PD);
+   m,n = size(A);
+   X = zeros(n);
+   for j = 1:n-1
+       for i = j+1:n
+           E = -1*(A[i,j]/A[j,j]);
+           A[i,:] = A[i,:] + E*A[j,:];
+           B[i]   = B[i]   + E*B[j];
+       end
+       println("");
+       println("Passo ",j);
+       println("--------------------------");
+       PrintLinearSystem(A,B,PI,PD);
+   end
+   println("");
+   println("---------------------------------------------------------------");
+   println("P R O C E S S O   D E   S U B S T I T U I Ç Ã O   R E V E R S A");
+   println("---------------------------------------------------------------");
+   println("\nDado o Sistema Triangular Superior Ux=B\n");
+   PrintLinearSystem(A,B,PI,PD);
+   println("\n--------------------------");
+   for i = n:-1:1
+       S = 0;
+       for j = i+1:n
+           S = S + A[i,j]*X[j];
+       end
+       X[i] = (B[i] - S)/A[i,i];
+       println("Passo ",n-i+1,": X[",i,"] = ",RealFormat(X[i],PI,PD));
+       println("--------------------------");
+   end
+end
+#----------------------------------------------------------------------
+# Simulação da EliminacaoGaussiana baseado em Matriz Triangular Inferior
+#----------------------------------------------------------------------
+function Teste_EliminacaoGaussiana_TI(AA,BB,PI,PD)
+   println("---------------------------------------------------------------------------");
+   println("T R A N S F O R M A Ç Ã O   P O R   E L I M I N A Ç Ã O   G A U S S I A N A");
+   println("---------------------------------------------------------------------------");
+   println("\nDado o Sistema Linear Ax=B\n");
+   A = copy(AA);
+   B = copy(BB);
+   PrintLinearSystem(A,B,PI,PD);
+   m,n = size(A);
+   X = zeros(n);
+   for j = n:-1:2
+       for i = 1:j-1
+           E = -1*(A[i,j]/A[j,j]);
+           A[i,:] = A[i,:] + E*A[j,:];
+           B[i]   = B[i]   + E*B[j];
+       end
+       println("");
+       println("Passo ",n-j+1);
+       println("--------------------------");
+       PrintLinearSystem(A,B,PI,PD);
+   end
+   println("");
+   println("-------------------------------------------------------------");
+   println("P R O C E S S O   D E   S U B S T I T U I Ç Ã O   D I R E T A");
+   println("-------------------------------------------------------------");
+   println("\nDado o Sistema Triangular Inferior Lx=B\n");
+   PrintLinearSystem(A,B,PI,PD);
+   println("\n--------------------------");
+   for i = 1:n
+       S = 0;
+       for j = 1:i-1
+           S = S + A[i,j]*X[j];
+       end
+       X[i] = (B[i] - S)/A[i,i];
+       println("Passo ",i,": X[",i,"] = ",RealFormat(X[i],PI,PD));
+       println("--------------------------");
+   end
+end
+#-------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------
+# Simulação do método Gauss-Jordan baseado em Matriz Diagonal
+#----------------------------------------------------------------------
+
+function Teste_GaussJordan(AA,BB,PI,PD)
+   println("-----------------------------------------------------------");
+   println("T R A N S F O R M A Ç Ã O   P O R   G A U S S - J O R D A N");
+   println("-----------------------------------------------------------");
+   println("\nDado o Sistema Linear Ax=B\n");
+   A = copy(AA);
+   B = copy(BB);
+   PrintLinearSystem(A,B,PI,PD);
+   m,n = size(A);
+   X = zeros(n);
+   for j = 1:n
+       for i = 1:n
+           if i!=j
+              E = -1*(A[i,j]/A[j,j]);
+              A[i,:] = A[i,:] + E*A[j,:];
+              B[i]   = B[i]   + E*B[j];
+           end
+       end
+       println("");
+       println("Passo ",j);
+       println("--------------------------");
+       PrintLinearSystem(A,B,PI,PD);
+   end
+   println("");
+   println("-------------------------------------------------------------");
+   println("S U B S T I T U I Ç Ã O   D I R E T A");
+   println("-------------------------------------------------------------");
+   println("\nDado o Sistema Triangular Inferior Lx=B\n");
+   PrintLinearSystem(A,B,PI,PD);
+   println("\n--------------------------");
+   for i = 1:n
+       X[i] = B[i]/A[i,i];
+       println("Passo ",i,": X[",i,"] = ",RealFormat(X[i],PI,PD));
+       println("--------------------------");
+   end
+end
+#-------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
