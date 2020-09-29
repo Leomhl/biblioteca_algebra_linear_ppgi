@@ -1,5 +1,6 @@
 using LinearAlgebra
 
+#motivo: nao foi implementada funcao identidade, portanto para usar I foi necessario o LinearAlgebra
 
 #******************************************************************************************
 #matrizes para testes
