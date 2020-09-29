@@ -1,3 +1,6 @@
+using LinearAlgebra
+
+
 #******************************************************************************************
 #matrizes para testes
 notTriangularMatrix = [-1 1/4 1/4 0;
@@ -300,18 +303,18 @@ end
 #Autora: gabriella radke
 #-------------------------------------------------------------------------------------
 
-function transpose(matrix)
+function transposta(matrix)
     #checa se input é matriz
     if isa(matrix, Array{Float64,2}) == true  || isa(matrix, Array{Int64,2}) == true
         #checa se input é matriz quadrada
         numberOfLines, numberOfColumns = size(matrix)
         if numberOfLines == numberOfColumns
             #cria matriz transposta vazia com dimensoes corretas para popularmos depois
-            transpose = zeros(numberOfColumns, numberOfLines)
+            transposta = zeros(numberOfColumns, numberOfLines)
             #o elemento a_ij da nova matriz sera o a_ji da original
             for line in 1:numberOfColumns 
                 for column in 1:numberOfLines
-                    transpose[line,column] = matrix[column,line]
+                    transposta[line,column] = matrix[column,line]
                 end
             end    
         else
@@ -322,12 +325,12 @@ function transpose(matrix)
         #retorna erro se input não é array
         throw(ArgumentError("'matrix' parameter should be a matrix"))
     end
-    return transpose 
+    return transposta 
 end
 
 #teste
-#is_triangular(transpose(upperTriangularMatrix))
-transpose(upperTriangularMatrix)
+#eh_triangular(transposta(upperTriangularMatrix))
+transposta(upperTriangularMatrix)
 
 
 
@@ -381,15 +384,15 @@ end
 #Autora: gabriella radke
 #-------------------------------------------------------------------------------------
 
-function orthogonal(matrix)
+function ortogonal(matrix)
      #checa se input é matriz
     if isa(matrix, Array{Float64,2}) == true  || isa(matrix, Array{Int64,2}) == true
         #checa se input é matriz quadrada
         numberOfLines, numberOfColumns = size(matrix)
         if numberOfLines == numberOfColumns
-            transposta = transpose(matrix)
+            matriz_transposta = transposta(matrix)
             #se matrix^T * matriz = Id, é ortogonal
-            if transposta*matrix == I
+            if matriz_transposta*matrix == I
                 return true
             else
                 return false
@@ -406,7 +409,7 @@ end
 
 
 #teste
-orthogonal([1 0; 0 1])
+ortogonal([1 0; 0 1])
 
 
 #******************************************************************************************
@@ -425,7 +428,7 @@ orthogonal([1 0; 0 1])
 #Saida; true(é base ortonormal) ou false (nao é base ortonormal)
 #Autora: gabriella radke
 #-------------------------------------------------------------------------------------
-function orthonormal_base(set_of_vectors)
+function base_ortonormal(set_of_vectors)
     #checando se o conjunto esta em forma de array
     if isa(set_of_vectors,Array) == true
         #pega tamanho do primeiro vetor, iremos comparar com o resto
@@ -466,7 +469,7 @@ end
 set_of_vectors = [[1/sqrt(2) 0 -1/sqrt(2)], [1/2 sqrt(2)/2 1/2], [1/2 -sqrt(2)/2 1/2]]
 
 #teste
-orthonormal_base([[1/sqrt(2) 0 -1/sqrt(2)], [1/2 sqrt(2)/2 1/2], [1/2 -sqrt(2)/2 1/2]])
+base_ortonormal([[1/sqrt(2) 0 -1/sqrt(2)], [1/2 sqrt(2)/2 1/2], [1/2 -sqrt(2)/2 1/2]])
 
 
 #******************************************************************************************
@@ -519,7 +522,7 @@ end
 #******************************************************************************************
 # DECOMPOSICAO QR Fatoração QR baseado em Projeções
 #------------------------------------------------------------------------------------------
-function Factorization_QR(A)
+function fatorizacao_qr(A)
    m,n = size(A);
    Q = zeros(n,n);
    R = zeros(n,n);
@@ -555,7 +558,7 @@ end
 #Autora: gabriella radke
 #-------------------------------------------------------------------------------------
 
-function is_triangular(matrix, upper = true)
+function eh_triangular(matrix, upper = true)
 
     #checamos se a entrada de fato é uma matriz
     if isa(matrix, Array{Float64,2}) == true  || isa(matrix, Array{Int64,2}) == true
@@ -608,7 +611,7 @@ end
 
 
 #teste
-is_triangular(upperTriangularMatrix)
+eh_triangular(upperTriangularMatrix)
 
 
 #******************************************************************************************
@@ -645,7 +648,7 @@ end
 #Saida: vetor x - solucao do sistema linear
 #Autora: gabriella radke
 #-------------------------------------------------------------------------------------
-function substitution(matrix,vector) 
+function substituicao(matrix,vector) 
     #checa se input é matriz
     if isa(matrix, Array{Float64,2}) == true  || isa(matrix, Array{Int64,2}) == true
         #Se não for quadrada nxn ou vetor nao tiver dimensao correta nx1 retorna erro
@@ -655,7 +658,7 @@ function substitution(matrix,vector)
                     'vector' should be a nx1 array"))
         end
         #caso matriz seja triangular inferior
-        if is_triangular(matrix,false) == true  
+        if eh_triangular(matrix,false) == true  
             #susbtituicao!
             x = zeros(numberOfLines)
             x[1] = vector[1]/matrix[1,1]
@@ -664,7 +667,7 @@ function substitution(matrix,vector)
                         end 
             return x
         #Caso matriz for triangular superior
-        elseif is_triangular(matrix,true) == true
+        elseif eh_triangular(matrix,true) == true
                 #substituicao!
                 x = zeros(numberOfLines) 
                 x[numberOfLines] = vector[numberOfLines]/matrix[numberOfLines,numberOfColumns]
@@ -684,13 +687,13 @@ A = [1.0      0.0      0.0;
  2.12374  1.0      0.0;
  1.20021  1.04731  1.0]
 
-print(A*substitution(A,b), b)
+print(A*substituicao(A,b), b)
 
 #******************************************************************************************
 # SUBSTITUICAO Obtenção do vetor X de soluções do Sistema Linear AX = B
 # por Substituicao Reversa usando a Matriz Triangular Superior
 #-------------------------------------------------------------------------------------
-function SubstituicaoReversa_TS(A,B)
+function substituicaoReversa_TS(A,B)
    m,n = size(A);
    X = zeros(n);
    for i = n:-1:1
@@ -707,7 +710,7 @@ end
 # SUBSTITUICAO Obtenção do vetor X de soluções do Sistema Linear AX = B
 # por Substituicao Direta usando a Matriz Triangular Inferior
 #-------------------------------------------------------------------------------------
-function SubstituicaoDireta_TI(A,B)
+function substituicaoDireta_TI(A,B)
    m,n = size(A);
    X = zeros(n);
    for i = 1:n
@@ -787,7 +790,7 @@ end
 # ELIMINICAO GAUSS Processo de Transformação das matrizes A e B 
 # para obter uma Matriz Triangular Superior
 #------------------------------------------------------------------------------------------
-function EliminacaoGaussiana_TS(A,B)
+function eliminacaoGaussiana_TS(A,B)
    m,n = size(A);
    for j = 1:n-1
        for i = j+1:n
@@ -803,7 +806,7 @@ end
 # ELIMINACAO GAUSS Processo de Transformação das matrizes A e B 
 # para obter uma Matriz Triangular Inferior
 #------------------------------------------------------------------------------------------
-function EliminacaoGaussiana_TI(A,B)
+function eliminacaoGaussiana_TI(A,B)
    m,n = size(A);
    for j = n:-1:2
        for i = 1:j-1
@@ -840,7 +843,7 @@ end
 #  DECOMPOSICAO L1U Fatoração L1U baseado em Aproximaçôes de Matrizes de Posto 1
 # Diagonal da Matriz Triangular Inferior L con 1s
 #------------------------------------------------------------------------------------------
-function Factorization_L1U(A)
+function fatoracao_L1U(A)
   m,n = size(A);
   p = min(m,n);
   L = zeros(m,p);
@@ -875,11 +878,11 @@ function Factorization_LU1(A)
 end
 #----------------------------------------------------------------------
 function LU(A)
-  return Factorization_L1U(A);
+  return fatoracao_L1U(A);
 end
 function LU(A,Sw)
   if Sw
-     return Factorization_L1U(A);
+     return fatoracao_L1U(A);
   else
      return Factorization_LU1(A);
   end 
@@ -1110,7 +1113,7 @@ end
 # Realiza Aproximações Sucesivas para obter a Solução
 # Usa o vetor auxiliar Y para guardar a solucao da iteracao anterior
 #------------------------------------------------------------------------------------------
-function Jacobi(A,B,E)
+function jacobi(A,B,E)
    m,n = size(A);
    Y = rand(n);
    X = zeros(n);
@@ -1136,7 +1139,7 @@ end
 # Realiza Aproximações Sucesivas para obter a Solução
 # Usa o vetor auxiliar Y para guardar a solucao da iteracao anterior
 #------------------------------------------------------------------------------------------
-function Gauss_Seidel(A,B,E)
+function gauss_Seidel(A,B,E)
    m,n = size(A);
    Y = rand(n);
    X = zeros(n);
@@ -1166,7 +1169,7 @@ end
 # Formatea um Número Real em "PI" Posições Inteiras e 
 # "PD" Posições Decimais
 #------------------------------------------------------------------------------------------
-function RealFormat(X,PI,PD)
+function formatarReal(X,PI,PD)
   X = round(X; digits=PD);
   S = string(X);
   L = length(S);
@@ -1240,10 +1243,10 @@ end
 # Imprime Horizontalmente o vetor U considerando 
 # "PI" Posições Inteiras e "PD" Posições Decimais
 #------------------------------------------------------------------------------------------
-function PrintVetorH(U,PI,PD)
+function imprimeVetorH(U,PI,PD)
    n = length(U)
    for k = 1:n
-       print(RealFormat(U[k],PI,PD));
+       print(formatarReal(U[k],PI,PD));
    end
 end
 
@@ -1251,10 +1254,10 @@ end
 # Imprime Verticalmente o vetor U considerando 
 # "PI" Posições Inteiras e "PD" Posições Decimais
 #------------------------------------------------------------------------------------------
-function PrintVetorV(U,PI,PD)
+function imprimeVetorV(U,PI,PD)
    n = length(U)
    for k = 1:n
-       println(RealFormat(U[k],PI,PD));
+       println(formatarReal(U[k],PI,PD));
    end
 end
 
@@ -1262,11 +1265,11 @@ end
 # Imprime os elementos da matriz A considerando 
 # "PI" Posições Inteiras e "PD" Posições Decimais
 #------------------------------------------------------------------------------------------
-function PrintMatrix(A,PI,PD)
+function imprimeMatriz(A,PI,PD)
    m,n = size(A)
    for i = 1:m
        for j = 1:n
-           print(RealFormat(A[i,j],PI,PD));
+           print(formatarReal(A[i,j],PI,PD));
        end
        println("");
    end
@@ -1276,14 +1279,14 @@ end
 # Imprime os elementos da matriz A e do vetor B 
 # considerando "PI" Posições Inteiras e "PD" Posições Decimais
 #------------------------------------------------------------------------------------------
-function PrintLinearSystem(A,B,PI,PD)
+function imprimeSistemaLinear(A,B,PI,PD)
    m,n = size(A)
    for i = 1:m
        for j = 1:n
-           print(RealFormat(A[i,j],PI,PD));
+           print(formatarReal(A[i,j],PI,PD));
        end
        print(" "^PI,"│");
-       print(RealFormat(B[i],PI,PD));
+       print(formatarReal(B[i],PI,PD));
        println("");
    end
 end
@@ -1291,12 +1294,12 @@ end
 #******************************************************************************************
 # Imprime a Matriz em um Arquivo TXT
 #------------------------------------------------------------------------------------------
-function MatrixToText(A,PI,PD,FILE)
+function matrizParaTexto(A,PI,PD,FILE)
    m,n = size(A);
    F = open(FILE,"w");
    for i = 1:m
        for j = 1:n
-           write(F,RealFormat(A[i,j],PI,PD));
+           write(F,formatarReal(A[i,j],PI,PD));
        end
        write(F,"\n");
    end
@@ -1308,7 +1311,7 @@ end
 #******************************************************************************************
 # Gera Codigo CSS para formato da Pagina HTML
 #------------------------------------------------------------------------------------------
-function GetCSS()
+function pegarCSS()
    ForeColorCell     = "#000000";  #Text Color of Cell
    BackColorCell     = "#FFDB4D";  #Background Color of Cell
    ForeColorIndex    = "#FFFFFF";  #Text Color of Index
@@ -1333,7 +1336,7 @@ end
 #******************************************************************************************
 # Gera o Codigo HTML associado para a Matriz 
 #------------------------------------------------------------------------------------------
-function WriteMatrix(F,A,PD,ShowIndex,ShowDiagonal)
+function escreveMatriz(F,A,PD,ShowIndex,ShowDiagonal)
    m,n = size(A);
    #-------------------------------------------------------------------------------
    write(F,"<TABLE class=TABLE>\n");
@@ -1350,7 +1353,7 @@ function WriteMatrix(F,A,PD,ShowIndex,ShowDiagonal)
           write(F,"<TD CLASS=INDEX>",string(i),"</TD>" );
        end
        for j = 1:n
-           write(F, (ShowDiagonal==true && i==j ? "<TD CLASS=DIAGONAL>" : "<TD CLASS=CELL>"), RealFormat(A[i,j],0,PD), "</TD>" );
+           write(F, (ShowDiagonal==true && i==j ? "<TD CLASS=DIAGONAL>" : "<TD CLASS=CELL>"), formatarReal(A[i,j],0,PD), "</TD>" );
        end
        write(F,"</TR>\n");
    end
@@ -1365,12 +1368,12 @@ function MatrixToHTML(A,PD,FILE,ShowIndex,ShowDiagonal,Title)
    F = open(FILE,"w");
    #-------------------------------------------------------------------------------
    write(F,"<HTML>\n<HEAD>\n");
-   write(F,GetCSS());
+   write(F,pegarCSS());
    write(F,"</HEAD>\n<BODY>\n");
    #-------------------------------------------------------------------------------
    write(F,"<H1>",Title,"</H1>\n","<HR>\n");
    #-------------------------------------------------------------------------------
-   WriteMatrix(F,A,PD,ShowIndex,ShowDiagonal);
+   escreveMatriz(F,A,PD,ShowIndex,ShowDiagonal);
    #-------------------------------------------------------------------------------
    close(F);
 end
@@ -1378,19 +1381,19 @@ end
 #******************************************************************************************
 # Simulação da Fatoração QR
 #------------------------------------------------------------------------------------------
-function Simulation_QR(A,PD,FILE)
+function simulacao_QR(A,PD,FILE)
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    F = open(FILE,"w");
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    write(F,"<HTML>\n<HEAD>\n");
-   write(F,GetCSS());
+   write(F,pegarCSS());
    write(F,"</HEAD>\n<BODY>\n");
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    write(F,"<H1>Simula&ccedil;&atilde;o do M&eacute;todo QR</H1>\n" );
    write(F,"<HR>\n");
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    write(F,"<SPAN CLASS=TITLE>Matriz A</SPAN>\n");
-   WriteMatrix(F,A,PD,true,false);
+   escreveMatriz(F,A,PD,true,false);
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    m,n = size(A);
    Q = zeros(n,n);
@@ -1399,7 +1402,7 @@ function Simulation_QR(A,PD,FILE)
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    write(F,"<SPAN CLASS=TITLE>Passo 1: Inicio</SPAN>\n<HR>\n");
    write(F,"<SPAN CLASS=TITLE>Matriz Q</SPAN>\n");
-   WriteMatrix(F,Q,PD,true,false);
+   escreveMatriz(F,Q,PD,true,false);
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    for j = 2:n
        P = zeros(n)
@@ -1411,7 +1414,7 @@ function Simulation_QR(A,PD,FILE)
        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
        write(F,"<SPAN CLASS=TITLE>Passo ",string(j),"</SPAN>\n<HR>\n");
        write(F,"<SPAN CLASS=TITLE>Matriz Q</SPAN>\n");
-       WriteMatrix(F,Q,PD,true,false);
+       escreveMatriz(F,Q,PD,true,false);
        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    end
    R = Q'A 
@@ -1422,19 +1425,19 @@ end
 #******************************************************************************************
 # Simulação da Fatoração L1U por Aproximação de Matriz de Posto 1
 #------------------------------------------------------------------------------------------
-function Simulation_L1U(A,PD,FILE)
+function simulacao_L1U(A,PD,FILE)
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    F = open(FILE,"w");
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    write(F,"<HTML>\n<HEAD>\n");
-   write(F,GetCSS());
+   write(F,pegarCSS());
    write(F,"</HEAD>\n<BODY>\n");
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    write(F,"<H1>Simula&ccedil;&atilde;o do M&eacute;todo L1U por Aproxima&ccedil;&atilde;o de Matriz de Posto 1</H1>\n" );
    write(F,"<HR>\n");
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    write(F,"<SPAN CLASS=TITLE>Matriz A</SPAN>\n");
-   WriteMatrix(F,A,PD,true,true);
+   escreveMatriz(F,A,PD,true,true);
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    m,n = size(A);
    p = min(m,n);
@@ -1444,9 +1447,9 @@ function Simulation_L1U(A,PD,FILE)
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    write(F,"<SPAN CLASS=TITLE>Passo 0: Inicio</SPAN>\n<HR>\n");
    write(F,"<SPAN CLASS=TITLE>Matriz L</SPAN>\n");
-   WriteMatrix(F,L,PD,true,true);
+   escreveMatriz(F,L,PD,true,true);
    write(F,"<SPAN CLASS=TITLE>Matriz U</SPAN>\n");
-   WriteMatrix(F,U,PD,true,true);
+   escreveMatriz(F,U,PD,true,true);
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    for k = 1:p
        L[:,k] = (1/T[k,k])*T[:,k];
@@ -1457,16 +1460,16 @@ function Simulation_L1U(A,PD,FILE)
        write(F,"<SPAN CLASS=TITLE>Passo ",string(k),"</SPAN>\n<HR>\n");
        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
        write(F,"<SPAN CLASS=TITLE>Matriz de Posto 1</SPAN>\n");
-       WriteMatrix(F,Z,PD,true,true);
+       escreveMatriz(F,Z,PD,true,true);
        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
        write(F,"<SPAN CLASS=TITLE>Matriz Resultante</SPAN>\n");
-       WriteMatrix(F,T,PD,true,true);
+       escreveMatriz(F,T,PD,true,true);
        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
        write(F,"<SPAN CLASS=TITLE>Matriz L</SPAN>\n");
-       WriteMatrix(F,L,PD,true,true);
+       escreveMatriz(F,L,PD,true,true);
        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
        write(F,"<SPAN CLASS=TITLE>Matriz U</SPAN>\n");
-       WriteMatrix(F,U,PD,true,true);
+       escreveMatriz(F,U,PD,true,true);
        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    end
    write(F,"</BODY>\n</HTML>\n");
@@ -1476,19 +1479,19 @@ end
 #******************************************************************************************
 # Simulação da Fatoração LU1 por Aproximação de Matriz de Posto 1
 #------------------------------------------------------------------------------------------
-function Simulation_LU1(A,PD,FILE)
+function simulacao_LU1(A,PD,FILE)
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    F = open(FILE,"w");
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    write(F,"<HTML>\n<HEAD>\n");
-   write(F,GetCSS());
+   write(F,pegarCSS());
    write(F,"</HEAD>\n<BODY>\n");
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    write(F,"<H1>Simula&ccedil;&atilde;o do M&eacute;todo LU1 por Aproxima&ccedil;&atilde;o de Matriz de Posto 1</H1>\n" );
    write(F,"<HR>\n");
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    write(F,"<SPAN CLASS=TITLE>Matriz A</SPAN>\n");
-   WriteMatrix(F,A,PD,true,true);
+   escreveMatriz(F,A,PD,true,true);
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    m,n = size(A);
    p = min(m,n);
@@ -1498,9 +1501,9 @@ function Simulation_LU1(A,PD,FILE)
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    write(F,"<SPAN CLASS=TITLE>Passo 0: Inicio</SPAN>\n<HR>\n");
    write(F,"<SPAN CLASS=TITLE>Matriz L</SPAN>\n");
-   WriteMatrix(F,L,PD,true,true);
+   escreveMatriz(F,L,PD,true,true);
    write(F,"<SPAN CLASS=TITLE>Matriz U</SPAN>\n");
-   WriteMatrix(F,U,PD,true,true);
+   escreveMatriz(F,U,PD,true,true);
    #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    for k = 1:p
        L[:,k] = T[:,k];
@@ -1511,16 +1514,16 @@ function Simulation_LU1(A,PD,FILE)
        write(F,"<SPAN CLASS=TITLE>Passo ",string(k),"</SPAN>\n<HR>\n");
        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
        write(F,"<SPAN CLASS=TITLE>Matriz de Posto 1</SPAN>\n");
-       WriteMatrix(F,Z,PD,true,true);
+       escreveMatriz(F,Z,PD,true,true);
        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
        write(F,"<SPAN CLASS=TITLE>Matriz Resultante</SPAN>\n");
-       WriteMatrix(F,T,PD,true,true);
+       escreveMatriz(F,T,PD,true,true);
        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
        write(F,"<SPAN CLASS=TITLE>Matriz L</SPAN>\n");
-       WriteMatrix(F,L,PD,true,true);
+       escreveMatriz(F,L,PD,true,true);
        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
        write(F,"<SPAN CLASS=TITLE>Matriz U</SPAN>\n");
-       WriteMatrix(F,U,PD,true,true);
+       escreveMatriz(F,U,PD,true,true);
        #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    end
    write(F,"</BODY>\n</HTML>\n");
@@ -1528,4 +1531,3 @@ function Simulation_LU1(A,PD,FILE)
 end
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-
