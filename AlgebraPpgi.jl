@@ -474,6 +474,7 @@ function fatorizacao_qr(A)
    return Q, R
 end
 
+
 #******************************************************************************************
 #TRIANGULAR - verificar se uma dada matriz é triangular
 #Notr que ser triangular (inferior ou superior) é uma propridade de matrizes quadradas
@@ -540,6 +541,50 @@ function e_triangular(matrix, upper = true)
     return true       
 end
 
+#******************************************************************************************
+# Verifica se uma matrix, mesmo que não seja quadrada, é triangular superior ou inferior.
+#
+# Entrada: uma matriz
+# Saída: booleano
+# Autor: Gastão, Gabriella.
+#------------------------------------------------------------------------------------------
+function e_triangular_superior(matrix)
+
+    numberOfLines, numberOfColumns = size(matrix)
+    diagonal=min(numberOfLines, numberOfColumns)
+
+    # se queremos testar se é triangular superior
+    # checamos se os elementos à esquerda da diagonal principal são 0 até o último elemento da diagonal
+    for line in 2:diagonal
+        for column in 1:line-1 
+            if matrix[line,column] > 0.0001
+                return false    #se algum elemento abaixo da diagonal não for 0, nao é triangular superior
+                break
+            end
+        end
+    end
+    
+    # se o número de linhas for menor ou igual ao de colunas o processo é finalizado
+    # caso contrário é preciso verificar que as "últimas" linhas são todas nulas.
+    if numberOfLines<=numberOfColumns
+        return true
+    else    
+        for line=diagona+1:numberOfLines
+            if norma(matrix[line,:]) > 0.0001
+                return false    #se algum elemento abaixo da diagonal não for 0, nao é triangular superior
+                break
+            end
+        end
+    end
+    return true
+
+end
+
+function e_triangular_inferior(matriz)
+    matriz_trans=matriz'
+    return e_triangular_superior(matriz_trans)
+end
+    
 
 
 #******************************************************************************************

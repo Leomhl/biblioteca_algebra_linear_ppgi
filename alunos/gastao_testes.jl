@@ -71,22 +71,24 @@ end
 #
 #
 #------------------------------------------------------------------------------------------
+# Decomposição LU
+# Resultado esperado: true
+# Autor do teste:Gastão
 function teste_lu(k)
     Tudo_certo=true
     for n=1:k
         for m=1:k
             A=randn(n,m)
-            L,U=decomposição_lu(A)
-            if norm(A-L*U)>0.00001
-                # L é triangular inferior?
-                # U é triangular superior?
-                Tudo_certo=false
-            end
+            L,U=LU(A)
+            if norma_matriz(A-L*U)>0.00001 Tudo_certo=false end   # A=LU?
+            if e_triangular_inferior(L)==false Tudo_certo=false end   # L é triangular inferior?
+            if e_triangular_superior(U)==false Tudo_certo=false end    # U é triangular superior?
         end
     end
     
     return Tudo_certo
 end
+teste_lu(10)
 #--------------------------------------------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------------------------------------------
@@ -120,20 +122,55 @@ end
 #--------------------------------------------------------------------------------------------------------------------------
 #    SVD
 #------------------------------------------------------------------------------------------
-function teste_SVD()
-    pontos=[1 2 3; 2 4 6 ; 3 6 9; 4 8 12]
+function teste_SVD(pontos)
+    colineares=true
     v=SVD(pontos')
-    println("O vetor v é ", v)
-    a=v=v/v[1]
-    println(a)
+    println("O vetor v é: ", v)
     println()
+    for i=1:length(pontos[:,1])
+        a=v*(pontos[i,1]/v[1])
+        if norm(pontos[i,:]-a)>0.001 colineares=false end
+        println("O ", i, "o ponto é:")
+        println(pontos[i,:])
+        println("O vetor v*(", pontos[i,1], "/v[1]) é:")
+        println(a)
+        println()
+    end
+    if colineares
+        println("Os pontos são colineares!")
+    else
+        println("Os pontos não são colineares!")
+    end
+end
 
-    pontos=[1 2 3; 2 4 6 ; 3 6 9; 4 8 15]
-    v=SVD(pontos')
-    println("O vetor v é ", v)
-    a=v=v/v[1]
-    println(a)
-    println()
+
+teste_SVD([1 2 3; 2 4 6 ; 3 6 9; 4 8 12])
+
+println()
+println()
+
+teste_SVD([1 2 3; 2 4 6 ; 3 6 9; 4 8 15])
+
+println()
+println()
+
+teste_SVD(rand(3,5))
+
+println()
+println()
+
+teste_SVD(pontos colineares)
+
+#------------------------------------------------------------------------------------------
+# Essa função gera k pontos colineares de dimensão n.
+function pontos_colineares(k,n) 
+    pontos=zeros(k,n)
+    pontos[1,:]=randn(n)                         # primeiro ponto, aleatório.
+    for i=2:k
+        m=randn(1)                               # escalar.
+        pontos[i,:]=m*(pontos[1,:])'             # novas linhas múltiplas da primeira.
+    end
+    return pontos  # as linhas da matriz são vetores colineares.
 end
 #--------------------------------------------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------------------------------------------
