@@ -1,8 +1,9 @@
 #******************************************************************************************
 # VALOR MAXIMO
-#Retorna o maior valor de um vetor
+# Retorna o maior valor de um vetor
 # Entradas: 1 vetor
 # Saídas: 1 valor numérico
+# Autores: Léo, Waldir e Nomair
 #------------------------------------------------------------------------------------------
 function valor_maximo(v)
     m = -Inf
@@ -12,8 +13,14 @@ function valor_maximo(v)
     return m
 end
 
-
-function identidade(n)
+#******************************************************************************************
+# MATRIZ IDENTIDADE
+# Retorna a identidade de uma matriz (digianonal pricipal = 1, restante = 0)
+# Entradas: 1 matriz
+# Saídas: 1 matriz
+# Autor: Gabriella
+#------------------------------------------------------------------------------------------
+function identidade1(n)
 	I=zeros(n,n)                  
 	for i=1:n 
 		I[i,i]=1 
@@ -26,6 +33,7 @@ end
 # Garante que o retorno será um vetor caso a entrada seja uma matriz de 1 coluna/linha
 # Entradas: 1 vetor/matriz
 # Saídas: 1 vetor
+# Autores: Léo, Waldir e Nomair
 #------------------------------------------------------------------------------------------
 function garante_vetor(v) 
     @assert ndims(v) == 1 || (valor_maximo(size(v)) == length(v))
@@ -35,10 +43,11 @@ end
 
 #******************************************************************************************
 # GARANTE MATRIZ 
-#Garante que o retorno será uma matriz de 1 coluna caso a entrada seja um vetor
+# Garante que o retorno será uma matriz de 1 coluna caso a entrada seja um vetor
 # Se v tiver mais de 2 dimensões, causará um erro
 # Entradas: 1 vetor
 # Saídas: 1 matriz
+# Autores: Léo, Waldir e Nomair
 #------------------------------------------------------------------------------------------
 function garante_matriz(v) 
     @assert 1 <= ndims(v) <= 2 
@@ -51,6 +60,7 @@ end
 # Soma de duas matrizes
 # Entradas: 2 matrizes
 # Saídas: 1 matriz
+# Autor: Waldir
 #------------------------------------------------------------------------------------------
 function soma_matrizes(A, B)
     A = garante_matriz(A)
@@ -71,11 +81,12 @@ end
 
 
 #******************************************************************************************
-# SOMA MATRIZ
-#Soma de matrizes (ou recursiva) recebe um número qualquer de matrizes e 
+# SOMA RECURSIVA DE MATRIZES
+# Soma de matrizes (ou recursiva) recebe um número qualquer de matrizes e 
 # retorna a soma entre estas, calculado de forma recursiva
 # Entradas: "n" matrizes
 # Saídas: 1 matriz
+# Autor: Waldir
 #------------------------------------------------------------------------------------------
 function soma_mat_rec(A, B...) # B... significa um número variável de argumentos
     if(length(B) == 0) # se não houver nenhum argumento adicional, retorna a própria matriz A
@@ -87,9 +98,10 @@ end
 
 
 #******************************************************************************************
-# MULTIPLICACAO Multiplicação de duas matrizes
+# MULTIPLICAÇÃO DE DUAS MATRIZES
 # Entradas: 2 matrizes
 # Saídas: 1 matriz
+# Autor: Léo
 #------------------------------------------------------------------------------------------
 function multiplicar_matrizes(A, B)
     A = garante_matriz(A)
@@ -113,10 +125,12 @@ function multiplicar_matrizes(A, B)
 end
 
 #******************************************************************************************
-# MULTIPLICACAO Produto de matrizes (ou recursiva) recebe um número qualquer de matrizes e 
+# MULTIPLICAÇÃO RECURSIVA DE MATRIZES 
+# Produto de matrizes (ou recursiva) recebe um número qualquer de matrizes e 
 # retorna o produto entre estas, calculado de forma recursiva
 # Entradas: "n" matrizes
 # Saídas: 1 matriz
+# Autor: Léo
 #------------------------------------------------------------------------------------------
 function prod_mat_rec(A, B...) # B... significa um número variável de argumentos
     if(length(B) == 0) # se não houver nenhum argumento adicional, retorna a própria matriz A
@@ -131,6 +145,7 @@ end
 # PRODUTO INTERNO Produto interno entre dois vetores
 # Entradas: 2 vetores
 # Saídas: 1 valor numérico
+# Autor: Léo
 #------------------------------------------------------------------------------------------
 function produto_interno(u, v)
     u1 = garante_vetor(u)
@@ -149,13 +164,18 @@ end
 # NORMA Retorna a norma de um vetor (comprimento)
 # Entradas: 1 vetores
 # Saídas: 1 valor numérico
+# Autor: Léo
 #------------------------------------------------------------------------------------------
 function norma(a) 
     return sqrt(produto_interno(a, a))
 end 
 
 #******************************************************************************************
-#NORMA VETOR
+# NORMA VETOR Retorna a norma de um vetor (comprimento)
+# Entradas: 1 vetores
+# Saídas: 1 valor numérico
+# Autor: Pablo
+#------------------------------------------------------------------------------------------
 function norma_vetor(V)
    n = length(V);
    S = 0;
@@ -166,8 +186,14 @@ function norma_vetor(V)
 end
 #------------------------------------------------------------------------------------------
 
+
+
 #******************************************************************************************
-#NORMA MATRIZ
+# NORMA MATRIZ Retorna a norma de uma matriz
+# Entradas: 1 matriz
+# Saídas: 1 valor numérico
+# Autor: Pablo
+#------------------------------------------------------------------------------------------
 function norma_matriz(A)
    m,n = size(A);
    S = 0;
@@ -183,6 +209,7 @@ end
 # NORMA DO MAXIMO Retorna a norma do máximo valor de um vetor
 # Entradas: 1 vetore
 # Saídas: 1 valor numérico
+# Autor: Waldir
 #------------------------------------------------------------------------------------------
 function norma_do_maximo(a) 
     return valor_maximo(abs.(a))
@@ -190,10 +217,11 @@ end
 
 
 #******************************************************************************************
-#  ANGULO Calcula o ângulo entre dois vetores
+# ÂNGULO Calcula o ângulo entre dois vetores
 # 
 # Entradas: 2 vetores
 # Saídas: float
+# Autor: Nomair
 #------------------------------------------------------------------------------------------
 function angulo_vetores(u,v)
     u1 = garante_vetor(u)
@@ -209,6 +237,7 @@ end
 # 
 # Entradas: 2 vetores
 # Saídas: booleano
+# Autor: Nomair
 #------------------------------------------------------------------------------------------
 function vetores_perpendiculares(u,v)
     result = produto_interno(u,v)
@@ -225,11 +254,12 @@ end
 #
 # Recebe: A -> matriz ou vetor que sofererá transposição
 # Retorna transposta -> matriz ou vetor transposto de A
+# Autor: Danilo
 #-------------------------------------------------------------------------------
 
 function transposta(A)
     
-    if size(A) == (1,) #verifica se A é um vetor unitário. Se sim, retorna ele mesmo,
+    if size(A) == (1,) #verifica se A é um vetor unitário. Se sim, retornao próprio,
         return(A)      #pois não há transposição a ser efetuada
     else
         m,n = size(A)  #calculando o tamanho da matriz/vetor A
@@ -244,41 +274,13 @@ end
 
 
 #******************************************************************************************
-#TRANSPOSTA
-#matriz tal que o elemento a_ij é igual ao elemento a_ji da matriz original
-#necessária para verificar ortogonalidade
-
-#Entrada: matriz (qualquer tamanho)
-#Etapa 1: verificar se é matriz (senão retorna erro)
-#Etapa 2: construir matriz transposta vazia com dimensoes corretas
-#Etapa 3: popula matriz transposta onde o novo elemento a_ij é igual ao elemento a_ji da matriz original
-#Saída: matriz (transposta)
-#Autora: gabriella radke
-#-------------------------------------------------------------------------------------
-
-function transposta(matrix)
-    #checa se input é matriz
-    if isa(matrix, Array{Float64,2}) == true  || isa(matrix, Array{Int64,2}) == true
-        #checa se input é matriz quadrada
-        numberOfLines, numberOfColumns = size(matrix)
-        if numberOfLines == numberOfColumns
-            #cria matriz transposta vazia com dimensoes corretas para popularmos depois
-            transposta = zeros(numberOfColumns, numberOfLines)
-            #o elemento a_ij da nova matriz sera o a_ji da original
-            for line in 1:numberOfColumns 
-                for column in 1:numberOfLines
-                    transposta[line,column] = matrix[column,line]
-                end
-            end    
-        else
-            #retorna erro se matriz nao e quadrada
-            throw(ArgumentError(" 'matrix' parameter should be a SQUARE matrix"))
-        end
-    else
-        #retorna erro se input não é array
-        throw(ArgumentError("'matrix' parameter should be a matrix"))
-    end
-    return transposta 
+# VETOR ORTOGONAL Testa a ortogonalidade entre dois vetores
+# Entradas: 2 vetores
+# Saídas: booleano (true ou false)
+# Autor: Léo
+#------------------------------------------------------------------------------------------
+function dois_vetores_ortogonais(a, b, tolerancia=10e-5)
+    return produto_interno(a, b) <= tolerancia
 end
 
 
@@ -287,6 +289,7 @@ end
 # Entradas: 2 retas. Cada reta é representada por 2 vetores.
 # "a" e "b" são tuplas com 2 vetores cada uma, que representam o início e o final de segmentos de retas
 # Saídas: booleano (true ou false)
+# Autor: Waldir
 #------------------------------------------------------------------------------------------
 function retas_ortogonais(a, b)
     x1, x2 = a; # x1 receberá o vetor do início do segmento da reta "a", e x2 receberá o vetor do final
@@ -296,19 +299,10 @@ end
 
 
 #******************************************************************************************
-# VETOR ORTOGONAL Testa a ortogonalidade entre dois vetores
-# Entradas: 2 vetores
-# Saídas: booleano (true ou false)
-#------------------------------------------------------------------------------------------
-function dois_vetores_ortogonais(a, b, tolerancia=10e-5)
-    return produto_interno(a, b) <= tolerancia
-end
-
-
-#******************************************************************************************
 # PLANO VETOR ORTOGONAL Testa a ortogonalidade entre um vetor e o plano
 # Entradas: 1 vetor, 1 matriz que constrói o plano
 # Saídas: booleano (true ou false)
+# Autor: Léo
 #------------------------------------------------------------------------------------------
 function vetor_ortogonal_plano(v, P, tolerancia=10e-5)
     return norma(multiplicar_matrizes(P, v)) <= tolerancia
@@ -339,7 +333,7 @@ function ortogonal(matrix)
         if numberOfLines == numberOfColumns
             matriz_transposta = transposta(matrix)
             #se matrix^T * matriz = Id, é ortogonal
-            if matriz_transposta*matrix == identidade(numberOfLines)
+            if matriz_transposta*matrix == identidade1(numberOfLines)
                 return true
             else
                 return false
@@ -413,6 +407,7 @@ end
 # PROJECAO RETA Calcula a projeção de um vetor em uma reta
 # Entradas: um vetor "v" e uma reta "R" (matriz)
 # Saídas: float
+# Autor: Waldir
 #------------------------------------------------------------------------------------------
 function projecao_vetor_reta(v, R)
     x1, x2 = R; # x1 receberá o vetor do início do segmento da reta "R", e x2 receberá o vetor do final
@@ -424,6 +419,7 @@ end
 # PROJECAO PLANO Calcula a projeção de um vetor em um plano
 # Entradas: 2 vetores, 1 é o vetor a ser projetado e o segundo é ortogonal ao plano
 # Saídas: float
+# Autor: Waldir
 #------------------------------------------------------------------------------------------
 function projecao_vetor_plano(v, u)
     return v - produto_interno(v, u) / (norma(u) ^ 2) * u;
@@ -458,6 +454,7 @@ end
 
 #******************************************************************************************
 # DECOMPOSICAO QR Fatoração QR baseado em Projeções
+# Autor: Pablo
 #------------------------------------------------------------------------------------------
 function fatorizacao_qr(A)
    m,n = size(A);
@@ -476,8 +473,6 @@ function fatorizacao_qr(A)
    R = Q'A;
    return Q, R
 end
-
-
 
 #******************************************************************************************
 #TRIANGULAR - verificar se uma dada matriz é triangular
@@ -618,6 +613,7 @@ end
 #******************************************************************************************
 # SUBSTITUICAO Obtenção do vetor X de soluções do Sistema Linear AX = B
 # por Substituicao Reversa usando a Matriz Triangular Superior
+# Autor Pablo
 #-------------------------------------------------------------------------------------
 function substituicaoReversa_TS(A,B)
    m,n = size(A);
@@ -635,6 +631,7 @@ end
 #******************************************************************************************
 # SUBSTITUICAO Obtenção do vetor X de soluções do Sistema Linear AX = B
 # por Substituicao Direta usando a Matriz Triangular Inferior
+# Autor Pablo
 #-------------------------------------------------------------------------------------
 function substituicaoDireta_TI(A,B)
    m,n = size(A);
@@ -657,6 +654,7 @@ end
 # 
 # Entradas: 1 matriz
 # Saídas: 1 matriz
+# Autor: Pablo
 #------------------------------------------------------------------------------------------
 function eliminacao_gaussiana(A)
     rows = size(A,1)
@@ -714,6 +712,7 @@ end
 #******************************************************************************************
 # ELIMINICAO GAUSS Processo de Transformação das matrizes A e B 
 # para obter uma Matriz Triangular Superior
+# Autor: Pablo
 #------------------------------------------------------------------------------------------
 function eliminacaoGaussiana_TS(A,B)
    m,n = size(A);
@@ -730,6 +729,7 @@ end
 #******************************************************************************************
 # ELIMINACAO GAUSS Processo de Transformação das matrizes A e B 
 # para obter uma Matriz Triangular Inferior
+# Autor: Pablo
 #------------------------------------------------------------------------------------------
 function eliminacaoGaussiana_TI(A,B)
    m,n = size(A);
@@ -747,6 +747,7 @@ end
 #******************************************************************************************
 # GAUSS JORDAN Processo de Transformação das matrizes A e B 
 # para obter uma Matriz Diagonal
+# Autor: Pablo
 #------------------------------------------------------------------------------------------
 function gauss_jordan(A,B)
    m,n = size(A);
@@ -767,6 +768,7 @@ end
 #******************************************************************************************
 #  DECOMPOSICAO L1U Fatoração L1U baseado em Aproximaçôes de Matrizes de Posto 1
 # Diagonal da Matriz Triangular Inferior L con 1s
+# Autor: Pablo
 #------------------------------------------------------------------------------------------
 function fatoracao_L1U(A)
   m,n = size(A);
@@ -786,6 +788,7 @@ end
 #******************************************************************************************
 # DECOMPOSICAO LU Fatoração LU1 baseado em Aproximaçôes de Matrizes de Posto 1
 # Diagonal da Matriz Triangular Superior U con 1s
+# Autor: Pablo
 #------------------------------------------------------------------------------------------
 function factorization_LU1(A)
   m,n = size(A);
@@ -802,6 +805,7 @@ function factorization_LU1(A)
   return L,U
 end
 #----------------------------------------------------------------------
+# Autor: Pablo
 function LU(A)
   return fatoracao_L1U(A);
 end
@@ -821,8 +825,10 @@ end
 # 
 # Entradas: 1 vetores.
 # Saídas: inteiro.
+# Autor: Nomair
 #------------------------------------------------------------------------------------------
 function posto_matriz(A)
+
     U = eliminacao_gaussiana(A)
     rows = size(U,1)
     rank = rows
@@ -839,10 +845,56 @@ function posto_matriz(A)
 end
 
 #******************************************************************************************
+#   Determinante
+#
+# Recebe: A -> matriz ou vetor que terá a determinante calculada
+# Retorna Determinante -> Valor de determinante para a matriz A
+# Autor: Waldir
+#-------------------------------------------------------------------------------------------
+
+function determinante(A)
+    m, n = size(A)
+    @assert m == n
+    A1 = float(A)
+
+    for fd = 1:n
+        for i = (fd + 1):n
+            if(A1[fd, fd] == 0.0) A1[fd][fd] == 1.0e-18 end
+
+            aux = A1[i,fd] / A1[fd,fd] 
+            for j = 1:n
+                A1[i,j] = A1[i,j] - aux * A1[fd,j]
+            end
+        end
+    end
+    product = 1.0
+
+    for i = 1:n
+        product *= A1[i,i]
+    end
+
+    return product
+end
+
+#******************************************************************************************
+#   Matriz é Inversível
+#
+# Recebe: A -> matriz ou vetor que será verificada sobre a inversibilidade
+# Retorna Bool -> matriz é ou não inversível 
+# Autor: Waldir
+#-------------------------------------------------------------------------------------------
+
+function matriz_eh_inversivel(A, tol=10e-5)
+    return !(abs(determinante(A)) < tol)
+end 
+
+
+#******************************************************************************************
 #   INVERSA
 #
 # Recebe: A -> matriz ou vetor que será invertida
 # Retorna inversa -> matriz inversa de A (A^⁻1)
+# Autor: Danilo
 #-------------------------------------------------------------------------------
 function inversa(A)
 
@@ -885,9 +937,9 @@ end
 function SVD(pontos)
     A=copy(pontos) #matriz criada com os pontos dados (Tem que testar se precisa pegar a transposta.)
     v=A[:,1]       
-    v=v/norma(v)    #Primeiro candidato a "v" é o primeiro ponto (normalizado) dado (vendo os pontos como os vetores colunas de A).
+    v=v/norma_vetor(v)    #Primeiro candidato a "v" é o primeiro ponto (normalizado) dado (vendo os pontos como os vetores colunas de A).
     erro=0         
-    erro_novo=norma(A-v*(A'*v)')  #O erro é verificado vendo a "distância" entre os pontos dados e a reta dada pelo vetor v".
+    erro_novo=norma_vetor(A-v*(A'*v)')  #O erro é verificado vendo a "distância" entre os pontos dados e a reta dada pelo vetor v".
     
     while(abs(erro-erro_novo)>0.01)    # A cada passo o erro diminui mas não necessariarmente converge para zero. 
                                        # Queremos que o processo pare quando a diferença do novo erro para o antigo seja "pequeno".
@@ -899,12 +951,8 @@ function SVD(pontos)
             A=A'
             end                         # Depois desses dois processos temos o novo candidato a "melhor" v!!!
          
-        erro_novo=norma(A-v*(v'*A))      
-        
-        println(erro)
-        println(erro_novo)
-        println(erro-erro_novo)         #Deixei os prints pra ver a variação do erro!!!
-        println()
+        erro_novo=norma_vetor(A-v*(v'*A))      
+
     end
  
     return v                            # "Melhor" v!!!    
@@ -919,29 +967,15 @@ end
 # um sistema equivalente ao dos dados de entrada.
 # Autor: Gastão.
 #------------------------------------------------------------------------------------------
-function escalonamento_com_pivoteamento(A,b)
-    A_amp=[A b']                                   # Matriz ampliada de A
-    n,m=size(A)
-  
-    for pivo=1:(n-1)                                
-        A_amp=pivoteamento_parcial(A_amp,pivo)     # Encontra um "novo" pivô.
-        A_amp=zerar_abaixo(A_amp,pivo)             # Zera os elementos abaixo do pivô, 
-    end
+
+function zerar_abaixo(A,pivo)
+    n=length(A[:,pivo])
+
+    for i=pivo+1:n
+        A[i,:]+=-(A[i,pivo]/A[pivo,pivo])A[pivo,:]     # Modifica todas as linhas abaixo da linha do pivô,
+    end                                                # zerando os elementos abaixo deste.
     
-    A=A_amp[:,1:m]                                 # Matrizes resultantes do escalonamento.
-    b=A_amp[:,m+1]
-    return A,b
-end
-#------------------------------------------------------------------------------------------
-function pivoteamento_parcial(A,pivo)
-    Ap=copy(A)
-    n_pivo=novo_pivo(Ap[:,pivo],pivo)              # "Novo" pivô (pode ser o original).
-    
-    linha=Ap[pivo,:]                               # Troca as linhas do pivô original com a do novo pivô.
-    Ap[pivo,:]=Ap[n_pivo,:]
-    Ap[n_pivo,:]=linha
-    
-    return Ap
+    return A
 end
 #------------------------------------------------------------------------------------------
 function novo_pivo(coluna,pivo)
@@ -959,14 +993,30 @@ function novo_pivo(coluna,pivo)
     return n_pivo
 end
 #------------------------------------------------------------------------------------------
-function zerar_abaixo(A,pivo)
-    n=length(A[:,pivo])
 
-    for i=pivo+1:n
-        A[i,:]+=-(A[i,pivo]/A[pivo,pivo])A[pivo,:]     # Modifica todas as linhas abaixo da linha do pivô,
-    end                                                # zerando os elementos abaixo deste.
+function pivoteamento_parcial(A,pivo)
+    Ap=copy(A)
+    n_pivo=novo_pivo(Ap[:,pivo],pivo)              # "Novo" pivô (pode ser o original).
     
-    return A
+    linha=Ap[pivo,:]                               # Troca as linhas do pivô original com a do novo pivô.
+    Ap[pivo,:]=Ap[n_pivo,:]
+    Ap[n_pivo,:]=linha
+    
+    return Ap
+end
+#------------------------------------------------------------------------------------------
+function escalonamento_com_pivoteamento(A,b)
+    A_amp=[A b']                                   # Matriz ampliada de A
+    n,m=size(A)
+  
+    for pivo=1:(n-1)                                
+        A_amp=pivoteamento_parcial(A_amp,pivo)     # Encontra um "novo" pivô.
+        A_amp=zerar_abaixo(A_amp,pivo)             # Zera os elementos abaixo do pivô, 
+    end
+    
+    A=A_amp[:,1:m]                                 # Matrizes resultantes do escalonamento.
+    b=A_amp[:,m+1]
+    return A,b
 end
 
 #******************************************************************************************
@@ -993,6 +1043,7 @@ end
 # JACOBI Metodo de Jacobi
 # Realiza Aproximações Sucesivas para obter a Solução
 # Usa o vetor auxiliar Y para guardar a solucao da iteracao anterior
+# Autor: Pablo
 #------------------------------------------------------------------------------------------
 function jacobi(A,B,E)
    m,n = size(A);
@@ -1019,6 +1070,7 @@ end
 # GAUSS SEIDEL Metodo de Gauss-Seidel
 # Realiza Aproximações Sucesivas para obter a Solução
 # Usa o vetor auxiliar Y para guardar a solucao da iteracao anterior
+# Autor: Pablo
 #------------------------------------------------------------------------------------------
 function gauss_Seidel(A,B,E)
    m,n = size(A);
@@ -1049,6 +1101,7 @@ end
 #******************************************************************************************
 # Formatea um Número Real em "PI" Posições Inteiras e 
 # "PD" Posições Decimais
+# Autor Pablo
 #------------------------------------------------------------------------------------------
 function formatarReal(X,PI,PD)
   X = round(X; digits=PD);
