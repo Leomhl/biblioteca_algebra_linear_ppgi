@@ -1,7 +1,6 @@
 #-----------------------------------------------------------------------------------
 #Funções a serem implementadas:
 #Triangular - verificar se uma dada matriz é triangular
-#Transposta - calcular matriz transposta
 #Ortogonal - verificar se uma dada matriz é ortogonal
 #Ortonormal - verificar se um dado conjunto de vetores forma base ortonormal
 #Substituição reversa - para solução de sistemas de equações lineares
@@ -17,78 +16,74 @@ notTriangularMatrix = [-1 1/4 1/4 0;
                         1/4 0 -1 1/4;
                         0 1/4 1/4 -1]
 
-upperTriangularMatrix = [-1 1/4 1/4 0;
-                        0 -1 -1 1/4;
-                        0 0 1/4 1/4;
-                        0 0 0 -1]
+squareTriU = [-1 1/4 1/4 0;
+              0 -1 -1 1/4;
+              0 0 1/4 1/4;
+              0 0 0 -1]
 
-lowerTriangularMatrix = [-1 0 0 0;
-                        1/4 -1 0 0;
-                        1/4 0 -1 0;
-                        0 1/4 1/4 -1]
+squareTriL = [-1 0 0 0;
+              1/4 -1 0 0;
+              1/4 0 -1 0;
+              0 1/4 1/4 -1]
+
+rectangularTriU = [ 1 3 1;
+                    0 1 7;
+                    0 0 4;
+                    0 0 0]
+
+rectangularTriL = [2 0 0 0 0; 
+                   3 1 0 0 0;
+                   4 6 2 0 0]
 
 
+
+matriz = lowerTriangularMatrix'
+
+for i in 1:5 
+    print(i)
+end
 
 #-----------------------------------------------------------------------------------
 #Triangular - verificar se uma dada matriz é triangular
-#Notr que ser triangular (inferior ou superior) é uma propridade de matrizes quadradas
-#portanto, devemos primeiramente verificar se o input é uma matriz quadrada
-#para então olhar suas entradas e caracteriza-la como triangular ou não
-#uma matriz é triangular superior se todas as entradas abaixo da diagonal são 0
-#é chamada triangular inferior se todas as entradas acima da diagonal são 0.
+#é chamada triangular inferior se todas as entradas acima da diagonal principal são 0.
+#é chamada triangular superior se todas as entradas abaixo da diagonal principal são 0
 
 #Entrada: matriz, se teste é para superior/inferior (default é superior, para inferior usar false em upper)
-#Etapa 1: verifica se é matriz (senão retorna erro); 
-#Etapa 2: verifica se matriz é quadrada (senão retorna erro);
-#Etapa 3: olha elementos abaixo ou acima da diagonal para determinar se é triangular ou não
+#Etapa 1: transforma entrada em array (caso seja de outro tipo); 
+#Etapa 2: olha elementos abaixo ou acima da diagonal principal para determinar se é triangular ou não
 #Saída: True (é triangular) ou False ( não é triangular)
 
-function is_triangular(matrix, upper = true)
+function e_triangular(matriz, superior = true)
 
-    #checamos se a entrada de fato é uma matriz
-    if isa(matrix, Array{Float64,2}) == true  || isa(matrix, Array{Int64,2}) == true
-        #checamos se é quadrada 
-        numberOfLines, numberOfColumns = size(matrix)
-        if numberOfLines == numberOfColumns 
+    #Transformamos entrada em array
+    matriz = Array(matriz)
+        #pegamos dimensoes da matriz
+        numeroDeLinhas, numeroDeColunas = size(matriz)
             #se queremos testar se é triangular superior
-            if upper == true 
+            if superior == true 
                 #checamos se os elementos abaixo da diagonal sao 0 (a_ij i>j)
-                for line in 2:numberOfLines
-                    for column in 1:line-1 
-                        if matrix[line,column] == 0 
-                            continue
-                        else 
-                            #se algum elemento abaixo da diagonal não for 0, nao é triangular superior
+                for linha = 2:numeroDeLinhas, coluna = 1:linha-1 
+                        #se algum elemento abaixo da diagonal não for 0, nao é triangular superior
+                        if matriz[linha,coluna] != 0 
                             return false 
                         end
-                    end
                 end
             #se queremos testar se é triangular inferior
-            elseif upper == false 
+            elseif superior == false 
                 #checamos se os elementos acima da diagonal sao 0 (a_ij i<j)
-                for line in 1:numberOfLines-1 
-                    for column in line+1:numberOfColumns 
-                        if matrix[line,column] == 0 
-                            continue
-                        else 
-                            #se algum elemento acima da diagonal não for 0, nao é triangular inferior
+                for linha = 1:numeroDeLinhas-1, coluna = linha+1:numeroDeColunas 
+                        #se algum elemento acima da diagonal não for 0, nao é triangular inferior
+                        if matriz[linha,coluna] != 0 
                             return false 
                         end
-                    end
                 end
             else 
                 #se o parametro upper nao for true nem false retornamos erro
-                throw(ArgumentError(" 'upper' parameter should be true or false"))
-            end
-        else 
-            #retornarmos erro se matriz não for quadrada
-            throw(ArgumentError(" 'matrix' parameter should be a SQUARE matrix"))
-        end
-    
-    else 
-        #retornamos erro se input nao for array
-        throw(ArgumentError("'matrix' parameter should be a matrix")) 
-    end    
+                #so vai retornar esse erro se o parametro superior for uma outra variavel definida 
+                #que nao seja true ou false
+                throw(ArgumentError("Parâmetro 'superior' deve ser true ou false. Para testar se é
+                é triangular inferior, utilizar false."))
+            end  
     #se chegamos até aqui, é pq a bendita é triangular
     return true       
 end
@@ -96,7 +91,7 @@ end
 
 
 #teste
-is_triangular(upperTriangularMatrix)
+e_triangular(notTriangularMatrix, Array(matriz))
 
 #-----------------------------------------------------------------------------------
 #Transposta 
@@ -104,50 +99,29 @@ is_triangular(upperTriangularMatrix)
 #necessária para verificar ortogonalidade
 
 #Entrada: matriz (qualquer tamanho)
-#Etapa 1: verificar se é matriz (senão retorna erro)
+#Etapa 1: transforma entrada em array
 #Etapa 2: construir matriz transposta vazia com dimensoes corretas
 #Etapa 3: popula matriz transposta onde o novo elemento a_ij é igual ao elemento a_ji da matriz original
 #Saída: matriz (transposta)
 
-function transpose(matrix)
-    #checa se input é matriz
-    if isa(matrix, Array{Float64,2}) == true  || isa(matrix, Array{Int64,2}) == true
-        #checa se input é matriz quadrada
-        numberOfLines, numberOfColumns = size(matrix)
-        if numberOfLines == numberOfColumns
-            #cria matriz transposta vazia com dimensoes corretas para popularmos depois
-            transpose = zeros(numberOfColumns, numberOfLines)
-            #o elemento a_ij da nova matriz sera o a_ji da original
-            for line in 1:numberOfColumns 
-                for column in 1:numberOfLines
-                    transpose[line,column] = matrix[column,line]
-                end
-            end    
-        else
-            #retorna erro se matriz nao e quadrada
-            throw(ArgumentError(" 'matrix' parameter should be a SQUARE matrix"))
-        end
-    else
-        #retorna erro se input não é array
-        throw(ArgumentError("'matrix' parameter should be a matrix"))
-    end
-    return transpose 
+function transposta(matriz)
+    
+    #trasnforma entrada em array
+    matriz = Array(matriz)
+    #dimensoes da matriz
+    numeroDeLinhas, numeroDeColunas = size(matriz)
+    #cria matriz transposta vazia com dimensoes corretas para popularmos depois
+    matrizTransposta = zeros(numeroDeColunas, numeroDeLinhas)
+    #o elemento a_ij da nova matriz sera o a_ji da original
+    for linha = 1:numeroDeColunas, coluna = 1:numeroDeLinhas
+        matrizTransposta[linha,coluna] = matriz[coluna,linha]
+    end  
+    return matrizTransposta
 end
 
 #teste
-#is_triangular(transpose(upperTriangularMatrix))
-transpose(upperTriangularMatrix)
-
-#-----------------------------------------------------------------------------------
-#Identidade - construir uma matriz identidade com o tamanho desejado
-#identidade é propriedade de matrizes quadradas
-#matriz identidade tem elementos da diagonal iguais a 1 e o resto igual a 0
-#necessaria para verificar ortogonalidade
-
-#Entrada: dimensao
-#Etapa 1: construir matriz de zeros com dimensao nxn
-#Etapa 2: popular elementos da diagonal com 1
-#Saída: matriz  (identidade)
+e_triangular(transposta(squareTriL))
+#transposta(squareTriU)
 
 #-----------------------------------------------------------------------------------
 #Ortogonal - verificar se uma matriz é ortogonal
@@ -163,15 +137,15 @@ transpose(upperTriangularMatrix)
 #Etapa 3: multiplica transposta pela matriz original e verifica se deu identidade
 #Saída: true(é ortogonal) ou false(não é ortogonal)
 
-function orthogonal(matrix)
+function orthogonal(matriz)
      #checa se input é matriz
-    if isa(matrix, Array{Float64,2}) == true  || isa(matrix, Array{Int64,2}) == true
+    if isa(matriz, Array{Float64,2}) == true  || isa(matriz, Array{Int64,2}) == true
         #checa se input é matriz quadrada
-        numberOfLines, numberOfColumns = size(matrix)
-        if numberOfLines == numberOfColumns
-            transposta = transpose(matrix)
+        numeroDeLinhas, numeroDeColunas = size(matriz)
+        if numeroDeLinhas == numeroDeColunas
+            matrizTransposta = transposta(matriz)
             #se matrix^T * matriz = Id, é ortogonal
-            if transposta*matrix == I
+            if matrizTransposta*matriz == I
                 return true
             else
                 return false
@@ -209,15 +183,15 @@ function orthonormal_base(set_of_vectors)
     #checando se o conjunto esta em forma de array
     if isa(set_of_vectors,Array) == true
         #pega tamanho do primeiro vetor, iremos comparar com o resto
-        numberOfLines, numberOfColumns = size(set_of_vectors[1])
+        numeroDeLinhas, numeroDeColunas = size(set_of_vectors[1])
         #alguma das dimensoes precisa ser 1, senao nao é vetor...
-        if numberOfLines != 1 && numberOfColumns != 1
+        if numeroDeLinhas != 1 && numeroDeColunas != 1
             #se nenhuma for 1, retorna erro
             throw(ArgumentError("elements of set_of_vectors should be vectors (dimensions 1xn or nx1)"))
         else
             #para cada vetor, ele deve ter o mesmo tamanho do primeiro e comprimento 1
             for vector in set_of_vectors
-                if numberOfLines == size(vector)[1] && numberOfColumns == size(vector)[2] && 
+                if numeroDeLinhas == size(vector)[1] && numeroDeColunas == size(vector)[2] && 
                     norm(vector) <= 1.001 && norm(vector) >= 0.999
                     continue
                 else
@@ -258,31 +232,31 @@ orthonormal_base([[1/sqrt(2) 0 -1/sqrt(2)], [1/2 sqrt(2)/2 1/2], [1/2 -sqrt(2)/2
 #Etapa 3: substituiçao
 #Saida: vetor x - solucao do sistema linear
 
-function substitution(matrix,vector) 
+function substitution(matriz,vector) 
     #checa se input é matriz
-    if isa(matrix, Array{Float64,2}) == true  || isa(matrix, Array{Int64,2}) == true
+    if isa(matriz, Array{Float64,2}) == true  || isa(matriz, Array{Int64,2}) == true
         #Se não for quadrada nxn ou vetor nao tiver dimensao correta nx1 retorna erro
-        numberOfLines,numberOfColumns = size(matrix)
-        if numberOfLines != numberOfColumns || numberOfLines != size(vector)[1] || 1 != size(vector)[2]
+        numeroDeLinhas,numeroDeColunas = size(matriz)
+        if numeroDeLinhas != numeroDeColunas || numeroDeLinhas != size(vector)[1] || 1 != size(vector)[2]
             throw(ArgumentError("'matrix' parameter should be a nxn square matrix and 
                     'vector' should be a nx1 array"))
         end
         #caso matriz seja triangular inferior
-        if is_triangular(matrix,false) == true  
+        if is_triangular(matriz,false) == true  
             #susbtituicao!
-            x = zeros(numberOfLines)
-            x[1] = vector[1]/matrix[1,1]
-            for i in 2:numberOfLines 
-            x[i] = (vector[i]- sum(matrix[i,j]*x[j] for j in 1:i-1))/matrix[i,i]
+            x = zeros(numeroDeLinhas)
+            x[1] = vector[1]/matriz[1,1]
+            for i in 2:numeroDeLinhas 
+            x[i] = (vector[i]- sum(matriz[i,j]*x[j] for j in 1:i-1))/matriz[i,i]
                         end 
             return x
         #Caso matriz for triangular superior
-        elseif is_triangular(matrix,true) == true
+        elseif is_triangular(matriz,true) == true
                 #substituicao!
-                x = zeros(numberOfLines) 
-                x[numberOfLines] = vector[numberOfLines]/matrix[numberOfLines,numberOfColumns]
-                for i in numberOfLines-1:-1:1
-                    x[i] = (vector[i]- sum(matrix[i,j]*x[j] for j in i+1:n))/matrix[i,i]
+                x = zeros(numeroDeLinhas) 
+                x[numeroDeLinhas] = vector[numeroDeLinhas]/matriz[numeroDeLinhas,numeroDeColunas]
+                for i in numeroDeLinhas-1:-1:1
+                    x[i] = (vector[i]- sum(matriz[i,j]*x[j] for j in i+1:n))/matriz[i,i]
                                 end            
                 return x
          #retorna erro se input não é array
