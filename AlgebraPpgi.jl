@@ -493,7 +493,7 @@ function e_triangular(matriz, superior = true)
                 #checamos se os elementos abaixo da diagonal sao 0 (a_ij i>j)
                 for linha = 2:numeroDeLinhas, coluna = 1:linha-1 
                         #se algum elemento abaixo da diagonal não for 0, nao é triangular superior
-                        if abs(matriz[linha,coluna])>1e-14  
+                        if abs(matriz[linha,coluna])>1e-10  
                             return false 
                         end
                 end
@@ -502,7 +502,7 @@ function e_triangular(matriz, superior = true)
                 #checamos se os elementos acima da diagonal sao 0 (a_ij i<j)
                 for linha = 1:numeroDeLinhas-1, coluna = linha+1:numeroDeColunas 
                         #se algum elemento acima da diagonal não for 0, nao é triangular inferior
-                        if abs(matriz[linha,coluna])>1e-14 
+                        if abs(matriz[linha,coluna])>1e-10
                             return false 
                         end
                 end
