@@ -84,10 +84,10 @@ function Factorization_LU1(A)
   return L,U
 end
 #----------------------------------------------------------------------
-function LU(A)
+function Factorization_LU(A)
   return Factorization_L1U(A);
 end
-function LU(A,Sw)
+function Factorization_LU(A,Sw)
   if Sw
      return Factorization_L1U(A);
   else
@@ -165,17 +165,46 @@ function GaussJordan(A,B)
    X = zeros(n);
    for j = 1:n
        for i = 1:n
+           E = -1*(A[i,j]/A[j,j]);
            if i!=j
-              E = -1*(A[i,j]/A[j,j]);
               A[i,:] = A[i,:] + E*A[j,:];
               B[i]   = B[i]   + E*B[j];
            end
        end
+   end
+   for j = 1:n
        X[j] = B[j]/A[j,j];
    end
-   return X;
+   return X,A,B;
 end
 #------------------------------------------------------------------------------------------
+#Verifica se a matriz é diagonalmente dominante.
+#Uma matriz é diagonalmente dominante, se para cada fila
+#o valor absoluto do elemento na diagonal principal 
+#é maior que a soma dos valores absolutos dos elementos 
+#restantes da mesma fila. 
+#------------------------------------------------------------------------------------------
+function MatrizDiagonalmenteDominante(A)
+  Sw = true;
+  while Sw==true
+     A = randn(n,n);
+     B = randn(n);
+     i = 1;
+     while i<=n && Sw==true
+         S = 0;
+         j = 1;
+         while j<=n
+             if i!=j
+                S = S + abs(A[i,j]);
+             end
+             j = j + 1;
+         end
+         Sw = Sw && (abs(A[i,i])>S);
+         i = i + 1;
+     end
+  end
+  return Sw;
+end
 #------------------------------------------------------------------------------------------
 #------------------------------------------------------------------------------------------
 # Metodo de Jacobi
@@ -184,8 +213,10 @@ end
 #------------------------------------------------------------------------------------------
 function Jacobi(A,B,E)
    m,n = size(A);
-   Y = rand(n);
    X = zeros(n);
+   if MatrizDiagonalmenteDominante(A)
+
+   Y = rand(n);
    t = 0;
    while NormVector(X-Y)>E
       t = t + 1;
@@ -199,6 +230,12 @@ function Jacobi(A,B,E)
           end
           X[i] = (B[i]- S)/A[i,i];
       end
+   end
+
+   else
+    
+      println("A matriz nao converge porque nao é diagonalmente dominante");
+
    end
    return X
 end
@@ -729,3 +766,7 @@ end
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
+
+
+
+
