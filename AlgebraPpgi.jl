@@ -491,55 +491,41 @@ end
 #Autora: gabriella radke
 #-------------------------------------------------------------------------------------
 
-function e_triangular(matrix, upper = true)
+function e_triangular(matriz, superior = true)
 
-    #checamos se a entrada de fato é uma matriz
-    if isa(matrix, Array{Float64,2}) == true  || isa(matrix, Array{Int64,2}) == true
-        #checamos se é quadrada 
-        numberOfLines, numberOfColumns = size(matrix)
-        if numberOfLines == numberOfColumns 
+    #Transformamos entrada em array
+    matriz = Array(matriz)
+        #pegamos dimensoes da matriz
+        numeroDeLinhas, numeroDeColunas = size(matriz)
             #se queremos testar se é triangular superior
-            if upper == true 
+            if superior == true 
                 #checamos se os elementos abaixo da diagonal sao 0 (a_ij i>j)
-                for line in 2:numberOfLines
-                    for column in 1:line-1 
-                        if matrix[line,column] == 0 
-                            continue
-                        else 
-                            #se algum elemento abaixo da diagonal não for 0, nao é triangular superior
+                for linha = 2:numeroDeLinhas, coluna = 1:linha-1 
+                        #se algum elemento abaixo da diagonal não for 0, nao é triangular superior
+                        if matriz[linha,coluna] != 0 
                             return false 
                         end
-                    end
                 end
             #se queremos testar se é triangular inferior
-            elseif upper == false 
+            elseif superior == false 
                 #checamos se os elementos acima da diagonal sao 0 (a_ij i<j)
-                for line in 1:numberOfLines-1 
-                    for column in line+1:numberOfColumns 
-                        if matrix[line,column] == 0 
-                            continue
-                        else 
-                            #se algum elemento acima da diagonal não for 0, nao é triangular inferior
+                for linha = 1:numeroDeLinhas-1, coluna = linha+1:numeroDeColunas 
+                        #se algum elemento acima da diagonal não for 0, nao é triangular inferior
+                        if matriz[linha,coluna] != 0 
                             return false 
                         end
-                    end
                 end
             else 
                 #se o parametro upper nao for true nem false retornamos erro
-                throw(ArgumentError(" 'upper' parameter should be true or false"))
-            end
-        else 
-            #retornarmos erro se matriz não for quadrada
-            throw(ArgumentError(" 'matrix' parameter should be a SQUARE matrix"))
-        end
-    
-    else 
-        #retornamos erro se input nao for array
-        throw(ArgumentError("'matrix' parameter should be a matrix")) 
-    end    
+                #so vai retornar esse erro se o parametro superior for uma outra variavel definida 
+                #que nao seja true ou false
+                throw(ArgumentError("Parâmetro 'superior' deve ser true ou false. Para testar se é
+                é triangular inferior, utilizar false."))
+            end  
     #se chegamos até aqui, é pq a bendita é triangular
     return true       
 end
+
 
 #******************************************************************************************
 # Verifica se uma matrix, mesmo que não seja quadrada, é triangular superior ou inferior.
